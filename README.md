@@ -92,21 +92,6 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 **After (Humanized):**
 > Heart failure is highly prevalent in patients with diabetes, occurring in more than one in five patients with type 2 diabetes aged over 65 years. In the EMPA-REG OUTCOME trial, empagliflozin reduced the risk of hospitalization for heart failure or cardiovascular death by 34%. The benefit was consistent in patients with and without heart failure at baseline.
 
-## Differences from Standard Humanizer
-
-This academic version differs from the standard humanizer skill:
-
-- **Focused on medical/scientific writing** - Examples from clinical trials and medical journals
-- **18 patterns** (vs 24) - Removed patterns irrelevant to academic writing:
-  - Boldface overuse
-  - Inline-header lists
-  - Emojis
-  - Chatbot artifacts ("I hope this helps!")
-  - Knowledge-cutoff disclaimers
-  - Sycophantic tone
-- **No "personality" section** - Academic writing should be objective, not personal
-- **Emphasis on data integrity** - Preserving statistics, study details, and findings
-
 ## References
 
 - [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) - Primary source for AI writing patterns
