@@ -127,3 +127,5 @@ This article is published under [CC-BY-4.0](https://creativecommons.org/licenses
 ## License
 
 MIT
+
+Based on [blader/humanizer](https://github.com/blader/humanizer).
