@@ -311,6 +311,7 @@ Provide:
 > The diagnosis of heart failure at baseline was based solely on the report of investigators, with no measures of cardiac function or biomarkers recorded. Empagliflozin reduced heart failure hospitalization and cardiovascular death when added to standard care. The benefit was consistent in patients with and without heart failure at baseline.
 
 **Changes made:**
+- Removed the em dash ("—")
 - Removed significance inflation ("pivotal challenge", "evolving landscape", "groundbreaking", "cornerstone")
 - Removed promotional language ("profound impact", "remarkable finding", "exciting findings")
 - Removed vague attributions ("Studies have shown") and replaced with specific trial name
