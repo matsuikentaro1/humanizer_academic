@@ -317,7 +317,6 @@ Provide:
 - Removed vague attributions ("Studies have shown") and replaced with specific trial name
 - Removed superficial -ing phrases ("underscoring", "highlighting")
 - Removed copula avoidance ("serves as") in favor of "is"
-- Removed em dashes in favor of periods
 - Removed AI vocabulary ("Additionally", "crucial", "pivotal")
 - Removed formulaic challenges section ("Despite challenges... future outlook")
 - Removed generic positive conclusion ("The future looks bright", "continue to reshape")
