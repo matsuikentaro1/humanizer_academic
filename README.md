@@ -8,7 +8,7 @@ A Claude Code skill that removes signs of AI-generated writing from academic med
 
 ```bash
 mkdir -p ~/.claude/skills
-git clone <repository-url> ~/.claude/skills/humanizer_academic
+git clone https://github.com/matsuikentaro1/humanizer_academic.git ~/.claude/skills/humanizer_academic
 ```
 
 ### Manual install/update (only the skill file)
