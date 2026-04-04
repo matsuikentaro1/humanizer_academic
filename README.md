@@ -44,7 +44,7 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 
 > "LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely result that applies to the widest variety of cases."
 
-## 24 Patterns Detected (with Before/After Examples)
+## 23 Patterns Detected (with Before/After Examples)
 
 ### Content Patterns
 
@@ -92,8 +92,7 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 | 20 | **"Beyond" → "In addition to"** | "Beyond the association with..." | "In addition to the association with..." |
 | 21 | **"via" → "through"** | "obtained via the online form" | "obtained through an online form" |
 | 22 | **Insufficient hedging** | "may reduce the risk of..." | "may help reduce the risk of..." |
-| 23 | **Compressed noun-dash phrases** | "a fatigue–sleepiness cycle" | "a cycle of fatigue and sleepiness" |
-| 24 | **Vague abstractions** | "suggest mutual reinforcement" | "suggest a potentially self-reinforcing cycle in which each may exacerbate the other" |
+| 23 | **Artificially condensed expressions** | "fatigue–sleepiness cycle", "mutual reinforcement" | "cycle of fatigue and sleepiness", "a self-reinforcing cycle in which each may exacerbate the other" |
 
 ### Preserved Academic Phrases (v1.1.0)
 
@@ -125,11 +124,12 @@ Medical paper examples (Patterns 1–18) are adapted from:
 
 This article is published under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) license.
 
-Examples for Patterns 19–24 are based on the author's (K. Matsui) observations during academic manuscript editing in sleep medicine research.
+Examples for Patterns 19–23 are based on the author's (K. Matsui) observations during academic manuscript editing in sleep medicine research.
 
 ## Version History
 
-- **1.1.0** - Added 6 new LLM-specific word choice patterns (19-24), preserved legitimate academic phrases, fixed hedging guidance consistency
+- **1.1.1** - Merged compressed noun-dash phrases and vague abstractions into single "Artificially condensed expressions" pattern (23)
+- **1.1.0** - Added LLM-specific word choice patterns (19-23), preserved legitimate academic phrases, fixed hedging guidance consistency
 - **1.0.0** - Initial release adapted for academic medical writing
 
 ## License

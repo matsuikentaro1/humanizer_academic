@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 1.1.0
+version: 1.1.1
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -8,7 +8,7 @@ description: |
   Detects and fixes patterns including: inflated significance claims, superficial
   -ing analyses, vague attributions, AI vocabulary words, copula avoidance,
   excessive hedging, generic conclusions, informal word choices (linked/beyond/via),
-  overly assertive causal claims, compressed noun-dash phrases, and vague abstractions.
+  overly assertive causal claims, and artificially condensed expressions.
   Preserves legitimate academic transitions (Notably, Prior studies have shown, etc.).
 allowed-tools:
   - Read
@@ -365,9 +365,11 @@ The following transitional and attribution phrases are **standard academic writi
 
 ---
 
-### 23. Compressed Noun-Dash Phrases
+### 23. Artificially Condensed Expressions
 
-**Problem:** LLMs create compact compound expressions using dashes or hyphens that feel artificially condensed. Academic writing prefers expanded, readable phrasing.
+**Problem:** LLMs compress complex ideas into unnaturally compact forms — either by packing nouns into dash-compounds or by substituting abstract shorthand for concrete explanations. Academic writing should be expanded and readable.
+
+**Type A — Compressed noun-dash phrases:**
 
 **Before:**
 > a reinforcing fatigue–sleepiness cycle
@@ -381,11 +383,7 @@ The following transitional and attribution phrases are **standard academic writi
 **After:**
 > the pathway linking sleep, mood, and cognition
 
----
-
-### 24. Vague Abstract Expressions Without Elaboration
-
-**Problem:** LLMs make abstract claims without unpacking them. Academic writing should be explicit about what abstract terms mean in context.
+**Type B — Abstract shorthand without elaboration:**
 
 **Before:**
 > Bidirectional associations between screen use before sleep and weekday sleep duration suggest mutual reinforcement.
@@ -393,7 +391,7 @@ The following transitional and attribution phrases are **standard academic writi
 **After:**
 > Bidirectional associations between screen use before sleep and weekday sleep duration suggest a potentially self-reinforcing cycle in which each may exacerbate the other.
 
-**Key principle:** When using abstract terms like "mutual reinforcement," "bidirectional relationship," or "complex interplay," always follow with a concrete explanation of the mechanism or meaning.
+**Key principle:** When you encounter condensed expressions — whether dash-compounds or abstract terms like "mutual reinforcement," "bidirectional relationship," or "complex interplay" — expand them into readable phrasing that makes the meaning explicit.
 
 ---
 
