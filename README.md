@@ -132,9 +132,11 @@ Examples for Patterns 19–25 are based on the author's (K. Matsui) observations
 
 > Matsui K. Delving Into PubMed Records: How AI-Influenced Vocabulary has Transformed Medical Writing since ChatGPT. *Perspect Med Educ*. 2025 Dec 2;14(1):882-890. doi:[10.5334/pme.1929](https://doi.org/10.5334/pme.1929)
 
-これは私が書いた論文で、PubMedの情報から、ChatGPTを含めたLLMが多用すると考えられた単語の使用頻度を定量化したものです。興味があったら読んでみてね！
+This is a paper I wrote. Using PubMed records, I measured how frequently LLMs such as ChatGPT tend to overuse certain words in medical writing. Take a look if you're curious!
 
 ![Figure 1 from Matsui 2025 — AI-influenced vocabulary trends in PubMed](2025_Matsui_Delving_into_PubMed_Records_Fig1.png)
+
+*The image above is Figure 1 from the paper cited above, reproduced under the [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) license.*
 
 ## Version History
 
