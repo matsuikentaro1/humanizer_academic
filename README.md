@@ -44,7 +44,7 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 
 > "LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely result that applies to the widest variety of cases."
 
-## 26 Patterns Detected (with Before/After Examples)
+## 31 Patterns Detected (with Before/After Examples)
 
 ### Content Patterns
 
@@ -61,7 +61,7 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 
 | # | Pattern | Before | After |
 |---|---------|--------|-------|
-| 7 | **AI vocabulary** | "Additionally... pivotal... landscape... crucial" | Remove or replace with simple words |
+| 7 | **AI vocabulary** | "pivotal... landscape... crucial" | Remove or replace with simple words (note: "Additionally" is allowed once per paragraph) |
 | 8 | **Copula avoidance** | "serves as... standing as... representing" | "is" |
 | 9 | **Negative parallelisms** | "Not only X but also Y" | "X and Y" |
 | 10 | **Rule of three** | "efficacy, safety, and tolerability" | Use natural number of items |
@@ -88,20 +88,34 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 
 | # | Pattern | Before | After |
 |---|---------|--------|-------|
-| 19 | **"linked to" → "associated with"** | "has been linked to shorter sleep duration" | "has been reported to be associated with" |
+| 19 | **"linked to" → "associated with"** (context-dependent) | "has been linked to shorter sleep duration" | "has been reported to be associated with" |
 | 20 | **"Beyond" → "In addition to"** | "Beyond the association with..." | "In addition to the association with..." |
 | 21 | **"via" → "through"** | "obtained via the online form" | "obtained through an online form" |
 | 22 | **Insufficient hedging** | "may reduce the risk of..." | "may help reduce the risk of..." |
 | 23 | **Artificially condensed expressions** | "fatigue–sleepiness cycle", "mutual reinforcement" | "cycle of fatigue and sleepiness", "a self-reinforcing cycle, with each behavior possibly exacerbating the other" |
 | 24 | **"where" as a non-locative connector** | "...at the most intensive level, where almost daily use was..." | "...at the most intensive level, with almost daily use..." |
 | 25 | **"yield" as a result verb** | "did not yield stable estimates" | "failed to produce stable estimates" |
-| 26 | **Underused classical terms (restore)** | "proportion of, aim of, was assessed, With regard to, to elucidate, These findings suggest" | "percentage of, purpose of, was measured, With respect to, to determine, The results suggest" |
+| 26 | **Minor word-choice refinements** | "interpretations remain speculative", "speculative given the small sizes" | "interpretations are still speculative", "speculative due to the small sizes" |
 
-### Preserved Academic Phrases (v1.1.0)
+### Cohesion and Connective Patterns (v1.1.4–1.3.0)
 
-The skill now explicitly **preserves** standard academic phrases that were previously over-corrected:
+| # | Pattern | Before | After |
+|---|---------|--------|-------|
+| 27 | **Preserve logical discourse markers** + vary by relation (do NOT over-trim) | (aggressive removal of "Although / Whereas / Thus / Based on these results") | Keep connectives that make the logic explicit; vary them by relation (result / contrast / concession) only to avoid mechanical repetition, never for decoration |
+| 28 | **Re-contextualize over-condensed semantic links** | "unmet needs to discuss their difficulties" | "unmet needs when it comes to discussing their difficulties" |
+| 29 | **Ornamental -ly intensifier adverbs** | "markedly reduced", "critically important", "remarkably consistent" | Remove decorative intensifiers; keep functional ones ("slightly", "consistently", "approximately") |
+| 30 | **Connective-preserving edits** (never bare-delete a transition) | "X reduced death. The benefit appeared within months." (choppy) | "X also reduced death, and this benefit appeared within months." |
+| 31 | **Paragraph cohesion** (old-to-new flow + paragraph-opening markers) | Disconnected sentences after editing | Mandatory final check: each sentence links to the previous one; contrast/continuity openers (However / On the other hand / Overall / Taken together) survive |
+
+### Preserved Academic Writing (do NOT flag as AI)
+
+The skill explicitly **preserves** standard academic writing that was previously over-corrected:
 
 - Transitional phrases: "Notably,", "Furthermore,", "In contrast,", etc.
+- Logical discourse markers: "Although", "Whereas", "Thus", "Based on these results", "As expected", etc. (Pattern 27)
+- Functional -ly adverbs: "slightly", "consistently", "modestly", "approximately" (Pattern 29)
+- Interrogative sentence openers: "Who selects into...", "What predicts...", etc.
+- "Additionally" up to once per paragraph (Pattern 7 exception)
 - Attribution phrases with citations: "Prior studies have shown that...", "Evidence suggests that...", etc.
 
 These are only flagged when used in excessive clusters or without supporting citations/data.
@@ -127,9 +141,9 @@ Medical paper examples (Patterns 1–18) are adapted from:
 
 This article is published under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) license.
 
-Examples for Patterns 19–25 are based on the author's (K. Matsui) observations during academic manuscript editing in sleep medicine research.
+Examples for Patterns 19–31 are based on the author's (K. Matsui) observations during academic manuscript editing in sleep medicine research.
 
-Pattern 26 (Underused Classical Academic Terms) is adapted from the following papers that quantified words and phrases with decreased frequency in post-ChatGPT medical and scientific writing:
+The AI-vocabulary patterns (Pattern 7) draw on the following papers that quantified words and phrases with increased or decreased frequency in post-ChatGPT medical and scientific writing:
 
 > Matsui K. Delving into PubMed records: some terms in medical writing have drastically changed after the arrival of ChatGPT. *medRxiv*. 2025. doi:[10.1101/2024.05.14.24307373](https://doi.org/10.1101/2024.05.14.24307373)
 
@@ -151,7 +165,9 @@ This is a paper I wrote. Using PubMed records, I measured how frequently LLMs su
 
 ## Version History
 
-- **1.2.0** - Added Pattern 26 (Underused Classical Academic Terms: restore classical expressions that AI tends to avoid, such as "percentage of", "purpose of", "was measured", "With respect to", "to determine"); enhanced Pattern 3 to recognize -ing phrases as implicit replacements for "therefore"/"thus" and added a restoration example; removed the "With respect to" line from Pattern 16 filler phrases (that substitution was the wrong direction — AI avoids "With respect to" rather than overusing it)
+- **1.3.1** - Extended Pattern 27 to vary connectives by logical relation (result / addition / contrast / concession / reason / sequence groups) to avoid mechanical repetition, with a guardrail against decorative connective-sprinkling (this is NOT an exception to Pattern 11).
+- **1.3.0** - Added Pattern 29 (Ornamental -ly intensifier adverbs: remove decorative "markedly/critically/remarkably" while keeping functional adverbs such as "slightly/consistently/approximately"), Pattern 30 (Connective-preserving edits: never bare-delete a transition — replace or restructure to avoid choppy asyndeton), and Pattern 31 (Paragraph cohesion: a mandatory final check for old-to-new flow and surviving paragraph-opening markers). Relaxed Pattern 7 so "Additionally" is allowed once per paragraph (only excessive use is flagged).
+- **1.2.x** - Reworked Pattern 26 into "Minor word-choice refinements" (remain → be-verb, given → due to); added Pattern 27 (Preserve logical discourse markers), Pattern 28 (Re-contextualize over-condensed semantic links), and context-dependent handling of "linked/associated" (Pattern 19). (The earlier "Underused Classical Academic Terms" pattern was retired during this restructuring; its vocabulary is now covered by Pattern 7 and the cited author papers.)
 - **1.1.3** - Added patterns 24 ("where" as a non-locative connector) and 25 ("yield" as a result verb); added author paper reference and Fig.1 to README
 - **1.1.2** - Pattern 13: Em dash rule upgraded to zero-tolerance elimination (no exceptions, mandatory final check step)
 - **1.1.1** - Merged compressed noun-dash phrases and vague abstractions into single "Artificially condensed expressions" pattern (23)

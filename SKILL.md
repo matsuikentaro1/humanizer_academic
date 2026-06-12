@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 1.2.0
+version: 1.3.1
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -8,10 +8,18 @@ description: |
   Detects and fixes patterns including: inflated significance claims, superficial
   -ing analyses, vague attributions, AI vocabulary words, copula avoidance,
   excessive hedging, generic conclusions, informal word choices (linked/beyond/via/where/yield),
-  overly assertive causal claims, and artificially condensed expressions.
-  Also restores classical academic terms that AI tends to avoid (percentage of,
-  purpose of, was measured, With respect to, to determine, hypothesis noun form).
-  Preserves legitimate academic transitions (Notably, Prior studies have shown, etc.).
+  overly assertive causal claims, artificially condensed expressions, and ornamental
+  -ly intensifier adverbs (markedly/critically/remarkably without quantitative backing).
+  Preserves legitimate academic writing: standard transitions (Notably, Prior studies have shown),
+  logical discourse markers (Although, Whereas, Thus, Based on these results, As expected),
+  functional adverbs (slightly, consistently, modestly, approximately),
+  and interrogative sentence openers (Who/What/Why). "Additionally" is allowed once per
+  paragraph; only excessive use is flagged. Context-dependent handling of linked/association
+  (not a blanket swap to "associated with"); minor fixes (remain->be, given->due to);
+  re-contextualizing over-condensed semantic links. Enforces connective-preserving edits
+  (never bare-delete a transition; replace it or restructure; vary connectives by logical
+  relation without mechanical repetition) and a mandatory final paragraph-cohesion check
+  so humanized text never reads choppy or disconnected.
 allowed-tools:
   - Read
   - Write
@@ -57,6 +65,13 @@ The following transitional and attribution phrases are **standard academic writi
 - "Several studies have reported ..."
 - "A growing body of evidence indicates ..."
 
+**Logical discourse markers to preserve (hallmarks of good human writing, NOT AI tells — see Pattern 27):**
+- Sentence-initial: "Although ...", "Whereas ...", "Thus, ...", "Hence, ...", "Thereafter, ..."
+- Reasoning/result connectives: "Based on these results, ...", "To that end, ...", "As expected, ...", "In agreement with previous reports, ...", "Over and above ..."
+
+**Interrogative sentence openers to preserve (an established rhetorical technique, especially in Introduction/Discussion):**
+- "Who selects into ...", "What predicts ...", "Why do ...", "How does ..." engage the reader and frame the analytic question. They are characteristic of skilled human writing, not AI patterns. Do NOT nominalize them (e.g., do not convert "Who selects into X" into "Selection into X").
+
 **Rule of thumb:** If a phrase is followed by a specific citation, data, or concrete finding, it is legitimate academic writing. Only flag attribution phrases when they are vague and unsupported (e.g., "Studies have shown that X is important" with no citation or specifics).
 
 ---
@@ -93,23 +108,15 @@ The following transitional and attribution phrases are **standard academic writi
 
 ### 3. Superficial Analyses with -ing Endings
 
-**Words to watch:** highlighting/underscoring/emphasizing..., ensuring..., reflecting/symbolizing..., contributing to..., cultivating/fostering..., encompassing..., showcasing..., suggesting..., demonstrating..., prompting...
+**Words to watch:** highlighting/underscoring/emphasizing..., ensuring..., reflecting/symbolizing..., contributing to..., cultivating/fostering..., encompassing..., showcasing...
 
-**Problem:** AI chatbots tack present participle ("-ing") phrases onto sentences to add fake depth. These -ing phrases often function as **implicit replacements for the explicit connectives "therefore" and "thus"**, both of which have declined in AI-generated academic writing. When the -ing phrase encodes a causal or conclusory relationship, restoring an explicit connective (therefore, thus, accordingly, consequently) clarifies the logic and removes the AI fingerprint.
+**Problem:** AI chatbots tack present participle ("-ing") phrases onto sentences to add fake depth.
 
 **Before:**
 > Hospitalization for heart failure occurred in 2.7% of patients receiving empagliflozin compared to 4.1% with placebo (HR 0.65; P = 0.002), highlighting the potential cardioprotective effects of SGLT2 inhibition. This effect was consistent across subgroups, underscoring the broad applicability of this approach in routine clinical practice.
 
 **After:**
 > Hospitalization for heart failure occurred in 2.7% of patients receiving empagliflozin compared to 4.1% with placebo (hazard ratio 0.65; 95% CI 0.50–0.85; P = 0.002). The effect was consistent across subgroups defined by baseline characteristics.
-
-**Alternative restoration (when the causal link should be preserved rather than removed):**
-
-**Before:**
-> The effect was consistent across subgroups, underscoring broad applicability of this approach.
-
-**After:**
-> The effect was consistent across subgroups. Accordingly, the approach is broadly applicable.
 
 ---
 
@@ -161,15 +168,17 @@ The following transitional and attribution phrases are **standard academic writi
 
 ### 7. Overused "AI Vocabulary" Words
 
-**High-frequency AI words:** Additionally, align with, crucial, delve, emphasizing, enduring, enhance, fostering, garner, highlight (verb), interplay, intricate/intricacies, key (adjective), landscape (abstract noun), pivotal, showcase, tapestry (abstract noun), testament, underscore (verb), valuable, vibrant
+**High-frequency AI words:** align with, crucial, delve, emphasizing, enduring, enhance, fostering, garner, highlight (verb), interplay, intricate/intricacies, key (adjective), landscape (abstract noun), pivotal, showcase, tapestry (abstract noun), testament, underscore (verb), valuable, vibrant
 
 **Problem:** These words appear far more frequently in post-2023 text. They often co-occur.
 
+**EXCEPTION — "Additionally":** "Additionally" is NOT on the blacklist. Well-written, human-authored epidemiology papers use it (for example, to open a sentence in a strengths paragraph: "Additionally, the study used a validated and widely used measure of the exposure."). **Keep up to one "Additionally" per paragraph.** Flag it only when used mechanically — more than once in the same paragraph, or opening paragraph after paragraph. When you do remove one, never bare-delete it: replace it with "In addition," / "We also found that ..." / "Moreover," or restructure the sentence (see Pattern 30).
+
 **Before:**
-> Additionally, empagliflozin reduced the risk of hospitalization for heart failure or cardiovascular death by 34%, a pivotal finding in the evolving therapeutic landscape. The number needed to treat was 35 over 3 years, underscoring the crucial clinical value of this intervention.
+> Additionally, empagliflozin reduced the risk of hospitalization for heart failure or cardiovascular death by 34%, a pivotal finding in the evolving therapeutic landscape. Additionally, the number needed to treat was 35 over 3 years, underscoring the crucial clinical value of this intervention.
 
 **After:**
-> Empagliflozin reduced the risk of hospitalization for heart failure or cardiovascular death by 34%. The number needed to treat to prevent one event was 35 over 3 years.
+> Additionally, empagliflozin reduced the risk of hospitalization for heart failure or cardiovascular death by 34%. The number needed to treat to prevent one event was 35 over 3 years.
 
 ---
 
@@ -300,6 +309,7 @@ The following transitional and attribution phrases are **standard academic writi
 - "At the present time" → "Currently" or omit
 - "It is important to note that mortality was reduced" → "Mortality was reduced"
 - "The study has the ability to detect" → "The study can detect"
+- "With respect to safety endpoints" → "For safety endpoints"
 
 **EXCEPTION:** Single-word academic transitions ("Notably,", "Importantly,", "Interestingly,") are standard in research papers and should NOT be removed. Only flag them when stacked excessively (e.g., three in one paragraph).
 
@@ -350,6 +360,14 @@ The following transitional and attribution phrases are **standard academic writi
 
 **After:**
 > EDS has been reported to be associated with shorter sleep duration, insomnia symptoms, depressive symptoms, and fatigue.
+
+**IMPORTANT — do NOT blanket-swap every "link" to "associated with".** Choose the verb that fits the context:
+- **Noun "link"** (e.g., "the link between vulnerability and distress") — leave unchanged.
+- **Data linkage** — use "merge"/"combine": "successfully linked with T2 data" → "successfully merged with T2 data".
+- **Downstream consequence** ("leads to / results in") — use "lead to": "has been linked to reduced productivity" → "can lead to reduced productivity".
+- **Reframe the whole clause** when more natural: "has been linked to reductions in patient experience and continuity of care" → "can compromise patient experience and continuity of care".
+
+Use "associated with" only when the relationship is genuinely a statistical/observational association.
 
 ---
 
@@ -449,47 +467,109 @@ The following transitional and attribution phrases are **standard academic writi
 
 ---
 
-### 26. Underused Classical Academic Terms (Restore These)
+### 26. Minor word-choice refinements (remain, given)
 
-**Problem:** LLMs have shifted vocabulary and phrasing away from classical academic expressions. Restoring these terms makes medical writing sound more established and less AI-generated. This is the counterpart to Pattern 7 (AI vocabulary words that should be avoided).
+**"remain" → a be-verb** (more natural in most contexts):
+- Before: However, these interpretations remain speculative.
+- After: However, these interpretations are still speculative.
 
-**26a. Word-level substitutions (AI preferred → restore to):**
+**"Given" → "due to"** when it introduces a reason:
+- Before: ...are still speculative given the small sizes of the subgroup samples.
+- After: ...are still speculative due to the small sizes of the subgroup samples.
 
-| AI version | Restore to |
-|---|---|
-| proportion of | percentage of |
-| aim of | purpose of |
-| was assessed | was measured |
-| With regard to | With respect to |
-| to elucidate | to determine |
-| a growing body of research | a growing number of studies |
-| concern | problem (only when the original sense is "serious issue") |
+---
 
-**26b. Phrasing-level substitutions:**
+### 27. Preserve logical discourse markers (do NOT over-trim connectives)
 
-| AI version | Restore to |
-|---|---|
-| These findings suggest | The results suggest |
-| ultimately (sentence-end) | after all (sentence-end) |
-| First (as a discourse marker at sentence start) | To begin with |
+**Problem:** Aggressive AI-pattern removal can strip the connectives that carry a paper's logic, leaving choppy, hard-to-read prose. This is a common failure mode of automated humanizing. Logical discourse markers are NOT AI tells; they are hallmarks of good human academic writing, and removing them is itself a defect.
 
-**26c. Structural restoration (nominalization and adverbialization):**
+**Preserve (do not delete):** Although / Whereas / Thus / Hence / Thereafter / In contrast / Conversely / Based on these results / To that end / As expected / In agreement with previous reports / Over and above. A measured "not only ... but also ..." (about once per paragraph) is also natural and should be kept — this refines Pattern 9, which targets only its *overuse*, not a single natural instance.
 
-- **Verb → Noun (restore nominalization)**
-  - AI: "We hypothesized that X"
-  - Human: "We tested the hypothesis that X"
+**Distinguishing rule:** ask whether the phrase *inflates meaning* (delete) or *makes logic explicit* (keep).
+- "underscores the pivotal importance of ..." → inflates meaning → delete (Patterns 1, 7).
+- "Based on these results, we examined ..." → makes logic explicit → keep.
 
-- **Adjective + Noun → Adverb (restore adverbialization)**
-  - AI: "A clear dose-response relationship was observed"
-  - Human: "The dose-response relationship was clearly observed"
+**Benchmark — the "sweet spot":** Well-written, pre-AI human papers chain discourse markers densely and naturally ("Based on these initial observations ... To that end ... As expected ... In agreement with previous reports ... Over and above the impact of [the main exposure] ...") while using ZERO inflated AI vocabulary. Aim for that profile: trim inflated vocabulary and significance puffery, but keep the logical connectives that make the argument easy to follow.
 
-**Caveats:**
-- Apply only in formal academic contexts. Especially useful in Discussion and Introduction where interpretation and argumentation dominate.
-- The `concern` vs `problem` restoration requires judgment. When softening is truly intended (a mild concern), do not force `problem`.
-- `To begin with` is sentence-initial only. Do not replace `first` when it appears mid-sentence.
-- Do not apply these substitutions mechanically. Consider meaning, rhythm, and nearby repetition before each swap.
+**Vary connectives by logical relation — but only to avoid near repetition, never for decoration.** When you add or rewrite a connective (per Pattern 30), first identify the logical relation the sentence actually needs, then choose a marker that fits it. If the same marker was just used nearby, substitute another from the *same* relation group so the prose does not repeat mechanically. Common groups:
+- **Result / consequence:** thus, hence, therefore, consequently, accordingly
+- **Addition:** moreover, furthermore, in addition (and "additionally" once per paragraph, per Pattern 7)
+- **Contrast:** however, in contrast, conversely, on the other hand
+- **Concession:** although, albeit, nonetheless, nevertheless, even though
+- **Reason / grounds:** because, since, as, given that
+- **Sequence / enumeration:** first / second, to begin with
 
-**Cross-reference:** This pattern is the mirror of Pattern 7 (AI vocabulary to avoid). Removing AI words via Pattern 7 and restoring classical terms via Pattern 26 together balance the vocabulary toward a more human register.
+**Guardrail (this is NOT an exception to Pattern 11):** vary connectives only when the relation is genuinely present and a near-repeat would otherwise occur. Do NOT sprinkle uncommon connectives (albeit, thereby, whereby, heretofore) to "sound human" — that is decoration, and it reads as artificial. Each connective must be earned by the logic of the sentence. Skilled human writers reach for "thus", "hence", "moreover", or "albeit" because the relation calls for it, not to diversify their vocabulary.
+
+---
+
+### 28. Re-contextualize over-condensed semantic links
+
+**Problem:** LLMs compress a relation into an over-direct phrasing. Expand it into natural, contextualized wording.
+
+- Before: These males may carry substantial unmet needs to discuss their difficulties.
+- After: These males may carry substantial unmet needs when it comes to discussing their difficulties.
+
+(See also Pattern 23 on artificially condensed expressions; Pattern 28 specifically targets over-direct *semantic* links rather than noun-dash compounds.)
+
+---
+
+### 29. Ornamental -ly intensifier adverbs
+
+**Problem:** LLMs dress up sentences with -ly intensifiers that add emphasis but no information ("markedly reduced", "critically important", "remarkably consistent"). Human-written epidemiology papers use -ly adverbs almost exclusively *functionally*: to convey magnitude, frequency, direction, or calibration.
+
+**Words to watch (ornamental — delete or downgrade):** markedly, remarkably, strikingly, dramatically, profoundly, critically, fundamentally, notably (as a mid-sentence adverb, e.g. "a notably higher rate"), significantly (with no statistical test behind it), increasingly, rapidly (figurative), uniquely, vastly, deeply, exceptionally, substantially (with no quantitative backing)
+
+**Functional adverbs to KEEP (these carry information):** approximately, slightly, modestly, consistently, almost, only, largely, generally, relatively, "statistically significantly" / "differed significantly" (when an actual test result is being reported), substantially (when it refers to a real, stated effect-size difference)
+
+**Decision rule:** Delete the adverb mentally and ask whether any information was lost. If nothing was lost, it was ornamental — delete it or replace the emphasis with the concrete number or comparison it was gesturing at. If it conveyed magnitude, frequency, direction, or calibration, it is functional — keep it.
+
+**Before:**
+> Patients with both conditions face a markedly reduced survival, and adherence is critically important. The effect was remarkably consistent across subgroups, and rates of heart failure are increasingly rising in this population.
+
+**After:**
+> Patients with both conditions have a median survival of approximately 4 years, and poor adherence worsens prognosis. The effect was consistent across subgroups, and the prevalence of heart failure in this population is rising.
+
+**Benchmark — how well-written human papers use -ly adverbs:** In strong epidemiology writing, the -ly adverbs almost always quantify or calibrate rather than decorate. Typical examples read like "the highest-exposure group consistently had lower mortality risk", "the exposure slightly decreases along the gradient", or "the study showed a modest association between the exposure and better self-rated health". Each adverb ("consistently", "slightly", "modest") carries information about frequency, magnitude, or calibration; none merely decorates. Aim for that profile.
+
+(Note: Pattern 1's example "markedly reduced median survival" is the same defect viewed as significance inflation; Pattern 29 generalizes it to all ornamental intensifiers.)
+
+---
+
+### 30. Connective-preserving edits (never bare-delete a transition)
+
+**Problem:** When an AI-pattern sentence opener is removed (an "Additionally," beyond the once-per-paragraph allowance, an "-ing" tail per Pattern 3, significance inflation per Pattern 1), the logical relation it marked — addition, contrast, consequence — still exists between the sentences. Deleting the marker without replacing it produces bare, disconnected sentences (asyndeton). **Choppy, connective-stripped prose is itself a tell of automated AI cleanup**, and a known failure mode of humanizing passes.
+
+**Rule: edit, don't excise.** Whenever you remove a sentence-initial transition or a clause that carried the link to the previous sentence, restore the link by one of:
+1. Substituting a natural connective: "In addition," / "Moreover," / "However," / "By contrast," / "We also found that ..."
+2. Echoing a key noun from the previous sentence at the start of the new sentence (old-to-new information flow): "... was associated with nonrestorative sleep. Nonrestorative sleep, in turn, ..."
+3. Restructuring the two sentences into one with an explicit conjunction.
+
+**Before (the AI text):**
+> Additionally, empagliflozin reduced cardiovascular death, highlighting its cardioprotective effects. Additionally, the benefit appeared within months.
+
+**Wrong fix (bare deletion — creates choppy asyndeton):**
+> Empagliflozin reduced cardiovascular death. The benefit appeared within months.
+
+**Right fix (connective preserved):**
+> Empagliflozin also reduced cardiovascular death, and this benefit appeared within months of treatment initiation.
+
+**Division of labor with Pattern 27:** Pattern 27 lists the discourse markers you must not *remove*; Pattern 30 governs what you must do when an edit *would otherwise leave a gap* — replace or restructure, never just cut.
+
+---
+
+### 31. Paragraph cohesion (old-to-new flow and paragraph-opening markers)
+
+**Problem:** Sentence-level edits accumulate into paragraph-level damage: topic sentences get blunted, the chain from one sentence to the next breaks, and the contrast/continuity markers that tie paragraphs together disappear. Well-written human papers are tightly chained.
+
+**What well-written human papers do:**
+- **Within a paragraph**, each sentence picks up a key word from the previous one (old-to-new flow), e.g. "the exposure was associated with a higher functional score. The functional index used here consists of ... To perform these activities, ...". The repeated key term ("functional") chains the sentences so the reader is never dropped.
+- **Between paragraphs**, the opening sentence names what the paragraph is about and, where the logic requires it, carries an explicit marker: "However, ...", "On the other hand, ...", "In addition to the differential effects described above, it is worth noting that ...", or "Taken together, the results suggest ...".
+
+**Checklist (apply to every paragraph after editing):**
+1. Does the first sentence state what the paragraph claims or covers?
+2. From the second sentence on, is each sentence linked to the previous one by either a connective or an echoed key word? If a link was broken by an edit, restore it (Pattern 30).
+3. Across paragraphs, are the contrast/continuity openers (However / In contrast / On the other hand / Overall / Taken together / In addition to X) still present where the argument needs them? Add one if a paragraph now starts abruptly.
 
 ---
 
@@ -497,15 +577,16 @@ The following transitional and attribution phrases are **standard academic writi
 
 1. Read the input text carefully
 2. Identify all instances of the patterns above
-3. Rewrite each problematic section
+3. Rewrite each problematic section — and whenever a rewrite removes a transition or linking clause, restore the logical link per Pattern 30 (never bare-delete)
 4. Ensure the revised text:
    - Sounds natural when read in an academic context
    - Uses precise, specific language
    - Maintains data integrity (numbers, statistics, findings)
    - Uses simple constructions (is/are/has) where appropriate
    - Avoids promotional or inflated language
-5. **MANDATORY FINAL CHECK:** Search your output for the em dash character "—". If ANY remain, replace them immediately. Zero em dashes allowed in final output.
-6. Present the humanized version
+5. **MANDATORY FINAL CHECK 1 (em dashes):** Search your output for the em dash character "—". If ANY remain, replace them immediately. Zero em dashes allowed in final output.
+6. **MANDATORY FINAL CHECK 2 (paragraph cohesion):** Re-read every paragraph of your output top to bottom and apply the Pattern 31 checklist: (a) the first sentence states the paragraph's claim; (b) every subsequent sentence is linked to the previous one by a connective or an echoed key word; (c) paragraph-opening contrast/continuity markers (However / In contrast / On the other hand / Overall / Taken together / In addition to X) survive where the argument needs them. If any link was broken by your edits, repair it before presenting the output. Choppy, disconnected prose is NOT acceptable humanized output.
+7. Present the humanized version
 
 ## Output Format
 
@@ -538,7 +619,7 @@ Provide:
 - Removed unsupported vague attributions ("Studies have shown" with no citation) and replaced with specific trial name (note: "Prior studies have shown that..." followed by citations would be preserved)
 - Removed superficial -ing phrases ("underscoring", "highlighting")
 - Removed copula avoidance ("serves as") in favor of "is"
-- Removed AI vocabulary ("Additionally", "crucial", "pivotal")
+- Removed AI vocabulary ("crucial", "pivotal") and ornamental intensifiers ("remarkable") — note that the "Additionally" disappeared only because its whole sentence was rewritten; a single "Additionally" per paragraph is acceptable and would otherwise be kept (Pattern 7 EXCEPTION)
 - Removed formulaic challenges section ("Despite challenges... future outlook")
 - Removed generic positive conclusion ("The future looks bright", "continue to reshape")
 - Fixed grammar ("The number needed to treat of 35" → "was 35")
