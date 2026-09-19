@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 2.1.0
+version: 2.1.1
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -37,6 +37,8 @@ When given text to humanize:
 The primary author writes medical research papers in a characteristic style (based on analysis of pre-2023 published work). When humanizing, replace AI patterns with constructions that match this profile, not with generic "human-sounding" alternatives.
 
 **Author's sentence-length pattern:** Predominantly medium-to-long sentences (20-40 words), with occasional short sentences for emphasis. Rarely uses very short (<10 word) sentences. Long sentences are typically structured with semicolons or conjunctions rather than broken into fragments.
+
+**Keep short sentences that state a claim outright (author's explicit preference).** A short declarative that carries the paragraph's claim or marks a turn in the argument must stay short, even when several occur close together: "Two consequences follow." / "The largest difference was cost." / "Speed differed less." / "Performance also depended on the prompt." Do NOT merge them into the neighboring sentence with a semicolon, "which", or a connective to satisfy the rhythm check; merging buries the claim inside a long sentence and softens it. Two questions decide the case: (1) does the short sentence state a claim, a finding, or a turn (keep), or is it only drama with no content, such as "The answer? Surprising." (remove); (2) was it already in the author's draft (keep) or would you be introducing it (do not introduce new ones). Rhythm diversity is to be obtained elsewhere in the paragraph.
 
 **Author's connective repertoire (use these naturally):**
 - "In addition," / "Additionally," (once per paragraph)
@@ -651,6 +653,7 @@ Use "associated with" only when the relationship is genuinely a statistical/obse
 **What NOT to change:**
 - Do not alter technical vocabulary, data, or meaning
 - Do not introduce staccato drama (multiple very short sentences in a row for rhetorical effect)
+- Do not merge an existing short sentence that states a claim outright ("The largest difference was cost.") into its neighbor; see Voice Calibration. "Do not introduce" applies to new drama, not to the author's own short claim sentences
 - Do not break the connective structure (Pattern 27/30/31 still apply)
 - Do not change the voice (active/passive) of the original unless Pattern 9 applies
 
