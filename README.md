@@ -2,14 +2,14 @@
 
 A skill that removes signs of AI-generated writing from academic medical papers, making them sound more natural and professionally written.
 
-The whole thing is a single file, `SKILL.md`. It is a long structured prompt, so you do not need Claude Code to use it.
+The main instructions are in `SKILL.md`, with reusable examples in `references/reader-clarity.md`. Both are plain text, so you do not need Claude Code to use them.
 
 ## Usage
 
 ### In a browser (Claude, ChatGPT, or anything that takes an attachment)
 
-1. Download [`SKILL.md`](SKILL.md) from this repository.
-2. Upload it to the chat along with the text you want to edit.
+1. Download [`SKILL.md`](SKILL.md) and [`references/reader-clarity.md`](references/reader-clarity.md) from this repository.
+2. Upload both files to the chat along with the text you want to edit.
 3. Ask: `Apply this skill to the following manuscript text: [your text]`
 
 That is all. No installation.
@@ -23,11 +23,12 @@ mkdir -p ~/.claude/skills
 git clone https://github.com/matsuikentaro1/humanizer_academic.git ~/.claude/skills/humanizer_academic
 ```
 
-Or, if you already have the repo cloned or downloaded `SKILL.md` on its own:
+Or, from a downloaded copy of the repository:
 
 ```bash
-mkdir -p ~/.claude/skills/humanizer_academic
+mkdir -p ~/.claude/skills/humanizer_academic/references
 cp SKILL.md ~/.claude/skills/humanizer_academic/
+cp references/reader-clarity.md ~/.claude/skills/humanizer_academic/references/
 ```
 
 The skill loads itself when it is relevant, so you can simply ask:
@@ -109,13 +110,13 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 | 32 | **Paraphrastic repetition** | "X is associated with Y. In other words, X may contribute to Y. That is, X plays a role in Y." | State each claim once; keep the most specific version |
 | 33 | **Content-free evaluation sentences** | "This is a noteworthy finding." "This observation is of clinical significance." | Delete standalone verdicts; if important, show why with data or mechanism |
 
-### Sentence Rhythm (v2.0)
+### Sentence Rhythm and Reader Clarity (v2.2)
 
 | # | Pattern | Before | After |
 |---|---------|--------|-------|
-| 34 | **Sentence rhythm & burstiness** ⭐ highest impact | All sentences 18-22 words, all start with noun-phrase subject | Mix short (< 15 words) and long (> 30 words) sentences; vary openings with prepositional phrases, subordinate clauses, connectives |
+| 34 | **Sentence rhythm serves comprehension** | Stacked conditions and unclear comparisons | Split or combine sentences when this clarifies meaning; no sentence-length quotas |
 
-> **Pattern 34 is the single highest-impact intervention.** In experimental testing (greedy-search loop with desklib + Binoculars detectors), restructuring sentence rhythm alone reduced the AI-detection score by ~90% of the achievable improvement — more than all vocabulary-level edits combined. It must be applied BEFORE vocabulary fixes, and ornamental adverb removal (Pattern 29) must always be paired with sentence restructuring (removing "markedly" without restructuring was shown to *increase* AI scores).
+> **Reader clarity comes first.** Preserve actors, comparisons, conditions, and logical relationships. Shorten by removing low-priority or repetitive sentences rather than compressing essential meaning. Rhythm changes are optional and serve comprehension, not AI-detector scores. See the [eight diagnostic examples](references/reader-clarity.md).
 
 ### Preserved Academic Writing (do NOT flag as AI)
 
@@ -173,6 +174,7 @@ This is a paper I wrote. Using PubMed records, I measured how frequently LLMs su
 
 ## Version History
 
+- **2.2.0** - Prioritize reader clarity over compressed prose and forced rhythm variation. Add eight reusable examples, sentence-level deletion guidance, abstract consistency checks, and protection for approved author opinions and intentional section spacing. Include the new reference file when installing or using the skill in a chat.
 - **2.1.1** - Voice Calibration and Pattern 34: keep the author's short sentences that state a claim outright ("The largest difference was cost."). They are no longer merged into neighboring sentences to satisfy the rhythm check, because merging buries and softens the claim.
 - **2.1.0** - Slimmed SKILL.md description to fit the 1024-character limit enforced by `claude install-skill`. No changes to patterns or skill behavior.
 - **2.0.0** - Major update based on experimental validation with local AI detectors (desklib + Binoculars). Added Pattern 34 (Sentence rhythm & burstiness: experimentally verified as the single highest-impact intervention, accounting for ~90% of achievable AI-score reduction). Added Voice Calibration section with author reference profile. Upgraded Process to two-pass draft-audit loop with mandatory rhythm check. Strengthened Pattern 11 to explicitly require term consistency (same construct = same term throughout). Documented critical interaction: Pattern 29 adverb removal must always be paired with Pattern 34 sentence restructuring (standalone deletion increases AI scores).
