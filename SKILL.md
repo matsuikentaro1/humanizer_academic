@@ -37,7 +37,7 @@ When given text to humanize:
 3. **Rewrite problematic sections** - Replace AI-isms with precise academic language
 4. **Preserve meaning** - Keep the scientific content and data intact
 5. **Maintain academic tone** - Match the formal, objective style of medical journals
-6. **Be specific** - Replace vague claims with concrete data and citations
+6. **Be specific** - Replace vague claims with the concrete data and citations the manuscript already contains; if it has none, point the claim out to the author instead of supplying facts
 7. **Follow the two-pass process** - Draft, self-audit for remaining AI tells, then finalize (see Process section)
 
 ---
@@ -109,6 +109,8 @@ The following transitional and attribution phrases are **standard academic writi
 **Rule of thumb:** If a phrase is followed by a specific citation, data, or concrete finding, it is legitimate academic writing. Only flag attribution phrases when they are vague and unsupported (e.g., "Studies have shown that X is important" with no citation or specifics).
 
 ---
+
+**About the examples:** The Before/After pairs below are illustrative. Some After versions add facts the Before text does not contain (for example, the trial name and effect sizes in Pattern 5) to show the target style. When editing, use only facts present in the input or supplied by the author; if a claim is vague and the input has no data for it, point it out to the author instead of filling it in.
 
 ## CONTENT PATTERNS
 
@@ -282,13 +284,11 @@ The following transitional and attribution phrases are **standard academic writi
 
 ## STYLE PATTERNS
 
-### 13. Em Dash Elimination (ZERO TOLERANCE)
+### 13. Em Dash Elimination
 
-**Rule: Replace ALL em dashes (—) in the text. No exceptions. Not even one.**
+**Rule:** Replace every em dash (—) in the output, including ones that look natural or serve a standard parenthetical function.
 
-**Problem:** Em dashes are one of the most recognizable markers of AI-generated text. LLMs insert them far more frequently than human writers. Even a single em dash flags a document as potentially AI-written. Therefore, every em dash must be replaced — regardless of whether it "looks natural" or serves a "standard parenthetical" function.
-
-**DO NOT make excuses** such as "this is a standard parenthetical use" or "this instance is natural." There is no acceptable use of em dashes in humanized output. If you find yourself thinking "this one is fine," you are wrong — replace it.
+**Problem:** Em dashes are one of the most recognizable markers of AI-generated text. LLMs insert them far more frequently than human writers, so even a single em dash can flag a document as potentially AI-written, and the author does not use them.
 
 **Replacement options (choose the best fit for each case):**
 - Parenthetical/appositive → commas: "X—a type of Y—does Z" → "X, a type of Y, does Z"
@@ -301,13 +301,11 @@ The following transitional and attribution phrases are **standard academic writi
 **After:**
 > SGLT2 inhibitors, a relatively new drug class, have transformed heart failure treatment. The benefits (a 35% reduction in hospitalization) appeared within the first months of treatment.
 
-**Before (single "natural-looking" em dash — STILL MUST BE REPLACED):**
+**Before (a single, natural-looking em dash, which is also replaced):**
 > Among the subjective dimensions of sleep, the feeling of restfulness upon awakening—often termed restorative or refreshing sleep—is a particularly important clinical indicator.
 
 **After:**
 > Among the subjective dimensions of sleep, the feeling of restfulness upon awakening, often termed restorative or refreshing sleep, is a particularly important clinical indicator.
-
-**Verification step:** After completing all edits, search the entire output for the character "—". If any remain, replace them. Your output must contain zero em dashes.
 
 ---
 
@@ -668,34 +666,16 @@ Name the actual exposure and adjustment variables where needed for the argument.
 
 ## Process (Two-Pass Draft-Audit)
 
-### Pass 1: Draft rewrite
-
-1. Read the input text carefully.
-2. **Audit meaning and information priority first.** Identify unclear referents, omitted comparisons, stacked conditions, and redundant summary sentences using references/reader-clarity.md. Restore necessary relations without inventing facts; then adjust rhythm where it helps.
-3. Identify and fix all vocabulary/phrase-level patterns (Patterns 1-33). After removing a transition or linking clause, check whether the logical relationship remains clear. Add a link only when needed; do not replace redundant summaries with generic bridge sentences. Removing an ornamental adverb alone is acceptable when the sentence remains clear.
-4. Ensure the draft:
-   - Sounds natural when read in an academic context
-   - Matches the author's voice profile (Voice Calibration section)
-   - Uses precise, specific language with consistent terminology (Pattern 11)
-   - Maintains data integrity (numbers, statistics, findings)
-   - Uses simple constructions (is/are/has) where appropriate
-   - Avoids promotional or inflated language
-
-### Pass 2: Self-audit
-
-5. **Ask yourself: "What makes this draft still look AI-generated?"** List any remaining tells briefly. Common survivors include:
-   - Omitted comparison conditions or ambiguous pronouns that force readers to reconstruct meaning
-   - Sentence openings still repetitive (check: do three+ consecutive sentences start the same way?)
-   - Vocabulary tells that slipped through (check Patterns 1, 7, 29 word lists)
-   - Broken connective chain (check Pattern 31 checklist)
-6. Fix every issue found in the self-audit.
-
-### Mandatory final checks
-
-7. **EM DASH CHECK:** Search your output for "—". If ANY remain, replace them. Zero em dashes allowed.
-8. **PARAGRAPH COHESION CHECK (Pattern 31):** Re-read every paragraph top to bottom: (a) first sentence states the paragraph's claim; (b) every subsequent sentence is linked to the previous one by a connective or echoed key word; (c) paragraph-opening contrast/continuity markers survive where the argument needs them. If any link was broken, repair it. Choppy, disconnected prose is NOT acceptable humanized output.
-9. **READABILITY CHECK (Pattern 34):** Re-read for one-pass comprehension. Change sentence boundaries only where this clarifies the argument. Do not force length variation. Remove redundant summaries; preserve concrete interpretation, necessary qualifications, and approved author opinions.
-10. Present the humanized version.
+1. **Meaning first.** Using references/reader-clarity.md, find unclear referents, omitted comparisons, stacked conditions, and redundant summary sentences. Restore necessary relations without inventing facts; adjust rhythm only after that, and only where it helps.
+2. **Then the patterns.** Fix the vocabulary- and phrase-level patterns (Patterns 1-33). After removing a transition or linking clause, check whether the logical relationship remains clear. Add a link only when needed; do not replace redundant summaries with generic bridge sentences. Removing an ornamental adverb alone is acceptable when the sentence remains clear.
+3. **Before presenting, check the draft against these requirements and fix what fails:**
+   - Sounds natural in an academic context and matches the author's voice profile (Voice Calibration section)
+   - Uses precise language with consistent terminology (Pattern 11) and keeps every number, statistic, and finding intact
+   - Uses simple constructions (is/are/has) where appropriate and no promotional or inflated language
+   - No run of three or more consecutive sentences that open the same way, and no vocabulary tells left from the Pattern 1, 7, and 29 word lists
+   - No em dashes (Pattern 13)
+   - Every paragraph is cohesive (Pattern 31): the first sentence states the paragraph's claim, each later sentence links to the one before, and contrast or continuity openers remain where the argument needs them
+   - Reads in one pass (Pattern 34): sentence boundaries change only where that clarifies the argument, length variation is not forced, and concrete interpretation, necessary qualifications, and approved author opinions are preserved
 
 ## Output Format
 
