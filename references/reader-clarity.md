@@ -15,7 +15,7 @@ Preserve concise sentences that are already clear. Do not expand every technical
 - Unclear: `The intervention adds value beyond usual care.`
 - Clearer, if pain was the measured outcome: `Patients receiving the intervention reported less pain than those receiving usual care alone.`
 
-The word "adds" is not prohibited. The missing outcome and comparator are the problem. Do not invent an outcome to complete the sentence; consult the evidence or ask the author.
+The word "adds" is not prohibited. The missing outcome and comparator are the problem. If the evidence does not support a specific outcome, do not invent one to complete the sentence. Treat it as a question for the author and mark it with a `[DATA NEEDED: ...]` placeholder (see "Be specific" in SKILL.md).
 
 ### 2. Give pronouns an unambiguous referent
 
@@ -36,7 +36,7 @@ Use the measured outcome instead of "outperformed." Specify which model used the
 - Dense: `Post-discharge risk-stratified intervention allocation improved outcomes.`
 - Clearer, if supported by a randomized trial: `After discharge, patients were assigned to an intervention according to their risk of readmission. Readmission was less frequent in this group than in the usual-care group.`
 
-Explain the risk, assignment, outcome, and comparator using the actual methods and results. Use association language where the design requires it.
+Explain the risk, assignment, outcome, and comparator using the actual methods and results. Use association language where the design requires it. Do not supply intervention details or comparators that the source text does not state.
 
 ### 5. Distinguish retrospective evaluation from prospective use
 
@@ -84,6 +84,6 @@ Do not weaken an explicitly approved opinion or expectation merely to make it so
 - Does each sentence add a finding, necessary condition, substantive interpretation, or useful connection?
 - Does shortening preserve the correspondence between methods and results, including within the abstract?
 - Have approved author opinions, technical terms, numbers, citation fields, and intentional section spacing been preserved?
-- Have edits stayed within the requested scope, without inventing missing information?
+- Have edits stayed within the requested scope, without inventing missing information? For example, a readability request for the Discussion does not authorize changes to the Methods or Results.
 
 For an audit request, identify passages and explain the problem. For an authorized revision, make the changes and reread the result. Avoid substituting apologies or explanations of editorial preferences for actual manuscript improvements.
