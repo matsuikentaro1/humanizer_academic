@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 2.2.0
+version: 2.3.0
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -26,19 +26,20 @@ Compressed prose omits an actor, object, comparator, condition, or logical relat
 - Diagnose pronouns and abstract verbs in context; do not blacklist words. Separate stacked comparison conditions when needed.
 - Preserve explicitly approved author opinions and expectations. Do not invent unsupported factual claims.
 - A closing summary or bridge sentence is optional. Keep substantive interpretation; delete mere restatement.
-- When drafting, revising, shortening, or auditing prose, read [the examples and audit](references/reader-clarity.md). These principles take precedence over conflicting instructions to compress prose or vary rhythm.
+- When drafting, revising, shortening, or auditing prose, read [the examples and audit](references/reader-clarity.md). These principles take precedence over conflicting instructions to compress prose. Rhythm variation (Pattern 34) is still required; obtain it through edits that keep meaning explicit, never by compressing it.
 
 ## Your Task
 
 When given text to humanize:
 
 1. **Identify AI patterns** - Scan for the patterns listed below
-2. **Resolve compressed meaning FIRST.** Make actors, comparisons, conditions, and logical links explicit before adjusting rhythm. Use Pattern 34 only when it improves readability.
-3. **Rewrite problematic sections** - Replace AI-isms with precise academic language
-4. **Preserve meaning** - Keep the scientific content and data intact
-5. **Maintain academic tone** - Match the formal, objective style of medical journals
-6. **Be specific** - Replace vague claims with concrete data and citations
-7. **Follow the two-pass process** - Draft, self-audit for remaining AI tells, then finalize (see Process section)
+2. **Resolve compressed meaning FIRST.** Make actors, comparisons, conditions, and logical links explicit.
+3. **Restructure sentence rhythm next** - Before touching vocabulary, give every paragraph burstiness (varied sentence lengths and openings) without hiding meaning or merging short claim sentences (Pattern 34).
+4. **Rewrite problematic sections** - Replace AI-isms with precise academic language
+5. **Preserve meaning** - Keep the scientific content and data intact
+6. **Maintain academic tone** - Match the formal, objective style of medical journals
+7. **Be specific** - Replace vague claims with real data and citations. Prefer data from the manuscript itself or from sources the author supplied. If you draw a figure or reference from your own knowledge, insert it but mark it `[verify: <source>]` so the author can confirm it. If no reliable data is available, insert a placeholder such as `[DATA NEEDED: effect size and trial]` rather than inventing specifics
+8. **Follow the two-pass process** - Draft, self-audit for remaining AI tells, then finalize (see Process section)
 
 ---
 
@@ -109,6 +110,8 @@ The following transitional and attribution phrases are **standard academic writi
 **Rule of thumb:** If a phrase is followed by a specific citation, data, or concrete finding, it is legitimate academic writing. Only flag attribution phrases when they are vague and unsupported (e.g., "Studies have shown that X is important" with no citation or specifics).
 
 ---
+
+**About the examples:** The Before/After pairs below are illustrative. Some After versions add facts the Before text does not contain (for example, the trial name and effect sizes in Pattern 5) to show the target style. When editing, follow the "Be specific" rule in Your Task: use facts from the input or from sources the author supplied, mark facts drawn from your own knowledge with `[verify: <source>]`, and use a `[DATA NEEDED: ...]` placeholder when no reliable data is available.
 
 ## CONTENT PATTERNS
 
@@ -282,13 +285,11 @@ The following transitional and attribution phrases are **standard academic writi
 
 ## STYLE PATTERNS
 
-### 13. Em Dash Elimination (ZERO TOLERANCE)
+### 13. Em Dash Elimination
 
-**Rule: Replace ALL em dashes (—) in the text. No exceptions. Not even one.**
+**Rule:** Replace every em dash (—) in the output, including ones that look natural or serve a standard parenthetical function.
 
-**Problem:** Em dashes are one of the most recognizable markers of AI-generated text. LLMs insert them far more frequently than human writers. Even a single em dash flags a document as potentially AI-written. Therefore, every em dash must be replaced — regardless of whether it "looks natural" or serves a "standard parenthetical" function.
-
-**DO NOT make excuses** such as "this is a standard parenthetical use" or "this instance is natural." There is no acceptable use of em dashes in humanized output. If you find yourself thinking "this one is fine," you are wrong — replace it.
+**Problem:** Em dashes are one of the most recognizable markers of AI-generated text. LLMs insert them far more frequently than human writers, so even a single em dash can flag a document as potentially AI-written, and the author does not use them.
 
 **Replacement options (choose the best fit for each case):**
 - Parenthetical/appositive → commas: "X—a type of Y—does Z" → "X, a type of Y, does Z"
@@ -301,13 +302,11 @@ The following transitional and attribution phrases are **standard academic writi
 **After:**
 > SGLT2 inhibitors, a relatively new drug class, have transformed heart failure treatment. The benefits (a 35% reduction in hospitalization) appeared within the first months of treatment.
 
-**Before (single "natural-looking" em dash — STILL MUST BE REPLACED):**
+**Before (a single, natural-looking em dash, which is also replaced):**
 > Among the subjective dimensions of sleep, the feeling of restfulness upon awakening—often termed restorative or refreshing sleep—is a particularly important clinical indicator.
 
 **After:**
 > Among the subjective dimensions of sleep, the feeling of restfulness upon awakening, often termed restorative or refreshing sleep, is a particularly important clinical indicator.
-
-**Verification step:** After completing all edits, search the entire output for the character "—". If any remain, replace them. Your output must contain zero em dashes.
 
 ---
 
@@ -325,10 +324,10 @@ The following transitional and attribution phrases are **standard academic writi
 
 ### 15. Curly Quotation Marks
 
-**Problem:** ChatGPT uses curly quotes ("...") instead of straight quotes ("...").
+**Problem:** ChatGPT uses curly quotes (“...”) instead of straight quotes ("...").
 
 **Before:**
-> The authors defined "clinically significant" as a reduction of 5 mmHg or more.
+> The authors defined “clinically significant” as a reduction of 5 mmHg or more.
 
 **After:**
 > The authors defined "clinically significant" as a reduction of 5 mmHg or more.
@@ -652,13 +651,35 @@ Use "associated with" only when the relationship is genuinely a statistical/obse
 
 ---
 
-### 34. Sentence rhythm serves comprehension
+### 34. Sentence Rhythm and Structural Diversity (Burstiness), in the service of clarity
 
-Adjust sentence boundaries when readers would otherwise have to hold too many conditions or comparisons in memory. Keep a short, clear claim short. Combine sentences only when the logical relationship becomes easier to follow; split them when each carries a distinct comparison or condition.
+**Burstiness is required, but never at the cost of clarity.** Experimental testing (desklib logit 5.54→2.47, a 55% reduction) showed that restructuring sentence rhythm accounts for ~90% of the achievable reduction in AI-detection scores. AI-generated text converges on a narrow band of sentence lengths (typically 15-25 words) with uniform Subject-Verb-Object openings; human writing mixes short and long sentences with varied openings. Every paragraph of the output must show this variation. Obtain it only through edits that keep actors, comparisons, conditions, and logical links explicit (see Reader clarity before compression).
 
-Do not optimize for AI-detector scores, sentence-length variance, or a quota of short and long sentences. Similar sentence lengths are not by themselves a defect. Removing an ornamental adverb does not require restructuring an otherwise clear sentence. Preserve precise technical vocabulary, data, and the author's approved strength of interpretation.
+**What to change (structure only, not vocabulary):**
+1. **Split sentences that stack conditions or comparisons.** A sentence that makes readers hold several conditions in memory is both a clarity defect and a source of long-sentence uniformity. Split it so each sentence carries one comparison or condition.
+2. **Combine adjacent supporting sentences** (not claim sentences) when they share a logical relation, using a conjunction or a semicolon that names that relation. This is a characteristic of the author's style.
+3. **Diversify sentence openings.** If three consecutive sentences start with a noun-phrase subject, restructure one to open with a prepositional phrase ("In this meta-analysis,"), a subordinate clause ("Although the sample was small,"), or a connective ("However,").
+4. **Relocate clause elements.** Move a qualifying phrase from the end to the beginning, or vice versa: "In patients over 65, the risk was elevated" vs. "The risk was elevated in patients over 65."
 
-Example (illustrative, not research evidence):
+**What NOT to change:**
+- Do not merge an existing short sentence that states a claim outright ("The largest difference was cost.") into its neighbor; see Voice Calibration. Such sentences already supply the short end of the rhythm. Obtain the remaining variation from the supporting sentences around them
+- Do not introduce staccato drama (multiple new very short sentences in a row for rhetorical effect)
+- Do not merge sentences in a way that hides which comparison or condition applies to which result
+- Do not alter technical vocabulary, data, or the author's approved strength of interpretation
+- Do not break the connective structure (Pattern 27/30/31 still apply)
+- Do not change the voice (active/passive) of the original unless Pattern 9 applies
+
+**Interaction with Pattern 29 (ornamental adverbs):** Deleting an adverb like "markedly" was experimentally shown to INCREASE AI-detection scores (logit +0.72 worse) when it left a shorter sentence that fit the uniform cadence. After removing ornamental adverbs, re-check the paragraph's rhythm; if it has become uniform, restructure one of the supporting sentences.
+
+**Before (uniform rhythm, all sentences 18-22 words):**
+> All three DACS had elevated PRRs for pantry overflow compared with comparator services. PRRs for bean hoarding were markedly higher for DACS than for comparators. Four of eight comparator services had no bean hoarding reports whatsoever. The remaining four comparator services had PRRs that were below one.
+
+**After (varied rhythm: 15, 28, 18 words):**
+> All three DACS had elevated PRRs for pantry overflow compared with comparator services (PRR <= 2.07). PRRs for bean hoarding were higher (MorningHarbor 77.89, CopperKettle 3.92, DailyGrind 3.24). Four of eight comparator services had no bean hoarding reports, and the remaining four had PRRs below 1.
+
+**Benchmark:** In well-written human medical papers, sentence lengths within a single paragraph range from 12 to 55 words, with standard deviations of 10-15 words. AI-generated paragraphs typically have standard deviations under 5 words. After humanizing, check that each paragraph contains at least one sentence notably shorter and one notably longer than the average.
+
+**Clarity example** (illustrative, not research evidence). Splitting a compressed sentence often adds rhythm and clarity together:
 - Dense: `Using matched samples and adjusted models, exposure predicted poorer outcomes across settings despite attenuation.`
 - Clearer, if supported by the study: `We compared matched samples from both settings. The association between exposure and mortality was weaker after adjustment but remained present in both settings.`
 
@@ -671,9 +692,10 @@ Name the actual exposure and adjustment variables where needed for the argument.
 ### Pass 1: Draft rewrite
 
 1. Read the input text carefully.
-2. **Audit meaning and information priority first.** Identify unclear referents, omitted comparisons, stacked conditions, and redundant summary sentences using references/reader-clarity.md. Restore necessary relations without inventing facts; then adjust rhythm where it helps.
-3. Identify and fix all vocabulary/phrase-level patterns (Patterns 1-33). After removing a transition or linking clause, check whether the logical relationship remains clear. Add a link only when needed; do not replace redundant summaries with generic bridge sentences. Removing an ornamental adverb alone is acceptable when the sentence remains clear.
-4. Ensure the draft:
+2. **Audit meaning and information priority first.** Identify unclear referents, omitted comparisons, stacked conditions, and redundant summary sentences using references/reader-clarity.md. Restore necessary relations without inventing facts.
+3. **Restructure sentence rhythm (Pattern 34).** Before touching vocabulary, vary sentence lengths and diversify sentence openings across each paragraph. Keep the author's short claim sentences short; take the variation from the supporting sentences.
+4. Identify and fix all vocabulary/phrase-level patterns (Patterns 1-33). After removing a transition or linking clause, check whether the logical relationship remains clear. Add a link only when needed; do not replace redundant summaries with generic bridge sentences. After removing ornamental adverbs (Pattern 29), re-check that the paragraph's rhythm has not become uniform.
+5. Ensure the draft:
    - Sounds natural when read in an academic context
    - Matches the author's voice profile (Voice Calibration section)
    - Uses precise, specific language with consistent terminology (Pattern 11)
@@ -683,25 +705,27 @@ Name the actual exposure and adjustment variables where needed for the argument.
 
 ### Pass 2: Self-audit
 
-5. **Ask yourself: "What makes this draft still look AI-generated?"** List any remaining tells briefly. Common survivors include:
+6. **Ask yourself: "What makes this draft still look AI-generated?"** List any remaining tells briefly. Common survivors include:
    - Omitted comparison conditions or ambiguous pronouns that force readers to reconstruct meaning
+   - Sentence lengths still too uniform (check: does each paragraph have at least one sentence notably shorter and one notably longer than average?)
    - Sentence openings still repetitive (check: do three+ consecutive sentences start the same way?)
    - Vocabulary tells that slipped through (check Patterns 1, 7, 29 word lists)
    - Broken connective chain (check Pattern 31 checklist)
-6. Fix every issue found in the self-audit.
+7. Fix every issue found in the self-audit.
 
 ### Mandatory final checks
 
-7. **EM DASH CHECK:** Search your output for "—". If ANY remain, replace them. Zero em dashes allowed.
-8. **PARAGRAPH COHESION CHECK (Pattern 31):** Re-read every paragraph top to bottom: (a) first sentence states the paragraph's claim; (b) every subsequent sentence is linked to the previous one by a connective or echoed key word; (c) paragraph-opening contrast/continuity markers survive where the argument needs them. If any link was broken, repair it. Choppy, disconnected prose is NOT acceptable humanized output.
-9. **READABILITY CHECK (Pattern 34):** Re-read for one-pass comprehension. Change sentence boundaries only where this clarifies the argument. Do not force length variation. Remove redundant summaries; preserve concrete interpretation, necessary qualifications, and approved author opinions.
-10. Present the humanized version.
+8. **EM DASH CHECK:** Search your output for "—". If ANY remain, replace them. Zero em dashes allowed.
+9. **PARAGRAPH COHESION CHECK (Pattern 31):** Re-read every paragraph top to bottom: (a) first sentence states the paragraph's claim; (b) every subsequent sentence is linked to the previous one by a connective or echoed key word; (c) paragraph-opening contrast/continuity markers survive where the argument needs them. If any link was broken, repair it. Choppy, disconnected prose is NOT acceptable humanized output.
+10. **RHYTHM AND READABILITY CHECK (Pattern 34):** This check is mandatory. (a) Scan sentence lengths across each paragraph. If all sentences fall within a 5-word range of each other, restructure at least one supporting sentence (split a sentence that stacks conditions, combine related supporting sentences, or reposition clauses). Never merge a short claim sentence to do this. (b) Re-read for one-pass comprehension: no restructuring may hide an actor, comparison, or condition. Remove redundant summaries; preserve concrete interpretation, necessary qualifications, and approved author opinions.
+11. Present the humanized version.
 
 ## Output Format
 
 Provide:
 1. The rewritten text
 2. A brief summary of changes made, noting which patterns were applied and any rhythm restructuring performed
+3. A list of every `[verify: ...]` and `[DATA NEEDED: ...]` marker inserted, so the author can check or fill each one
 
 ---
 

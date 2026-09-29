@@ -110,13 +110,13 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 | 32 | **Paraphrastic repetition** | "X is associated with Y. In other words, X may contribute to Y. That is, X plays a role in Y." | State each claim once; keep the most specific version |
 | 33 | **Content-free evaluation sentences** | "This is a noteworthy finding." "This observation is of clinical significance." | Delete standalone verdicts; if important, show why with data or mechanism |
 
-### Sentence Rhythm and Reader Clarity (v2.2)
+### Sentence Rhythm and Reader Clarity (v2.3)
 
 | # | Pattern | Before | After |
 |---|---------|--------|-------|
-| 34 | **Sentence rhythm serves comprehension** | Stacked conditions and unclear comparisons | Split or combine sentences when this clarifies meaning; no sentence-length quotas |
+| 34 | **Sentence rhythm & burstiness, in the service of clarity** | Uniform 18-22 word sentences; stacked conditions and unclear comparisons | Vary sentence lengths and openings in every paragraph by splitting stacked sentences and combining related supporting sentences; keep short claim sentences short |
 
-> **Reader clarity comes first.** Preserve actors, comparisons, conditions, and logical relationships. Shorten by removing low-priority or repetitive sentences rather than compressing essential meaning. Rhythm changes are optional and serve comprehension, not AI-detector scores. See the [eight diagnostic examples](references/reader-clarity.md).
+> **Reader clarity comes first.** Preserve actors, comparisons, conditions, and logical relationships. Shorten by removing low-priority or repetitive sentences rather than compressing essential meaning. Burstiness is still required in every paragraph (mandatory rhythm check), but it is obtained only through edits that keep meaning explicit, and never by merging the author's short claim sentences. See the [eight diagnostic examples](references/reader-clarity.md).
 
 ### Preserved Academic Writing (do NOT flag as AI)
 
@@ -174,6 +174,7 @@ This is a paper I wrote. Using PubMed records, I measured how frequently LLMs su
 
 ## Version History
 
+- **2.3.0** - Restore burstiness as a required step (Pattern 34 and the mandatory rhythm check) while keeping the v2.2 reader-clarity priority and the v2.1.1 rule that short claim sentences stay short. Rhythm variation now comes from splitting sentences that stack conditions, combining related supporting sentences, and varying openings. "Be specific" now replaces vague claims with real data, marks facts drawn from model knowledge with `[verify: ...]`, and uses `[DATA NEEDED: ...]` placeholders instead of inventing specifics. Pattern 13 keeps the zero-em-dash rule with a calmer tone (thanks to @kaicot for PR #3 and #4).
 - **2.2.0** - Prioritize reader clarity over compressed prose and forced rhythm variation. Add eight reusable examples, sentence-level deletion guidance, abstract consistency checks, and protection for approved author opinions and intentional section spacing. Include the new reference file when installing or using the skill in a chat.
 - **2.1.1** - Voice Calibration and Pattern 34: keep the author's short sentences that state a claim outright ("The largest difference was cost."). They are no longer merged into neighboring sentences to satisfy the rhythm check, because merging buries and softens the claim.
 - **2.1.0** - Slimmed SKILL.md description to fit the 1024-character limit enforced by `claude install-skill`. No changes to patterns or skill behavior.
