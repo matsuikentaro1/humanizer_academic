@@ -73,9 +73,9 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 
 | # | Pattern | Before | After |
 |---|---------|--------|-------|
-| 13 | **Em dash elimination (zero tolerance)** | "benefits—a 35% reduction—appeared early—" | Use commas, parentheses, or periods. ALL em dashes removed, no exceptions |
+| 13 | **Em dash elimination** | "benefits—a 35% reduction—appeared early—" | Use commas, parentheses, or periods. Every em dash is replaced, including natural-looking ones |
 | 14 | **Title Case Headings** | "Statistical Analysis And Primary Endpoints" | "Statistical analysis and primary endpoints" |
-| 15 | **Curly quotes** | \u201cclinically significant\u201d | "clinically significant" |
+| 15 | **Curly quotes** | “clinically significant” | "clinically significant" |
 
 ### Filler and Hedging
 
@@ -174,7 +174,7 @@ This is a paper I wrote. Using PubMed records, I measured how frequently LLMs su
 
 ## Version History
 
-- **2.3.0** - Restore burstiness as a required step (Pattern 34 and the mandatory rhythm check) while keeping the v2.2 reader-clarity priority and the v2.1.1 rule that short claim sentences stay short. Rhythm variation now comes from splitting sentences that stack conditions, combining related supporting sentences, and varying openings. "Be specific" now replaces vague claims with real data, marks facts drawn from model knowledge with `[verify: ...]`, and uses `[DATA NEEDED: ...]` placeholders instead of inventing specifics. Pattern 13 keeps the zero-em-dash rule with a calmer tone (thanks to @kaicot for PR #3 and #4).
+- **2.3.0** - Restore burstiness as a required step (Pattern 34 and the mandatory rhythm check) while keeping the v2.2 reader-clarity priority and the v2.1.1 rule that short claim sentences stay short. Rhythm variation now comes from splitting sentences that stack conditions, combining related supporting sentences, and varying openings. "Be specific" now replaces vague claims with real data, marks facts drawn from model knowledge with `[verify: ...]`, and uses `[DATA NEEDED: ...]` placeholders instead of inventing specifics. Pattern 13 keeps the zero-em-dash rule with a calmer tone (thanks to @kaicot for PR #3 and #4). Example Befores now contain every fact in their Afters, so the examples demonstrate style edits without adding facts; the Pattern 34 word counts, the rhythm criterion, and a wrong cross-reference were also corrected.
 - **2.2.0** - Prioritize reader clarity over compressed prose and forced rhythm variation. Add eight reusable examples, sentence-level deletion guidance, abstract consistency checks, and protection for approved author opinions and intentional section spacing. Include the new reference file when installing or using the skill in a chat.
 - **2.1.1** - Voice Calibration and Pattern 34: keep the author's short sentences that state a claim outright ("The largest difference was cost."). They are no longer merged into neighboring sentences to satisfy the rhythm check, because merging buries and softens the claim.
 - **2.1.0** - Slimmed SKILL.md description to fit the 1024-character limit enforced by `claude install-skill`. No changes to patterns or skill behavior.

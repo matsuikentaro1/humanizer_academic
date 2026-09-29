@@ -111,7 +111,7 @@ The following transitional and attribution phrases are **standard academic writi
 
 ---
 
-**About the examples:** The Before/After pairs below are illustrative. Some After versions add facts the Before text does not contain (for example, the trial name and effect sizes in Pattern 5) to show the target style. When editing, follow the "Be specific" rule in Your Task: use facts from the input or from sources the author supplied, mark facts drawn from your own knowledge with `[verify: <source>]`, and use a `[DATA NEEDED: ...]` placeholder when no reliable data is available.
+**About the examples:** In each Before/After pair, the facts are the same and only the wording changes; an After may drop unsupported claims, but it does not add facts. Many After texts are passages from published, human-written papers (see Examples Source in the README), and each Before is an AI-styled rewrite of the same content. When editing, never add facts that are not in the input: follow the "Be specific" rule in Your Task: use facts from the input or from sources the author supplied, mark facts drawn from your own knowledge with `[verify: <source>]`, and use a `[DATA NEEDED: ...]` placeholder when no reliable data is available.
 
 ## CONTENT PATTERNS
 
@@ -136,7 +136,7 @@ The following transitional and attribution phrases are **standard academic writi
 **Problem:** LLMs hit readers over the head with claims of notability, often listing sources without context.
 
 **Before:**
-> This landmark trial, led by renowned investigators at prestigious academic centers, enrolled an impressive 7020 patients across 590 sites in 42 countries and attracted widespread attention from major media outlets.
+> This landmark trial, led by renowned investigators at prestigious academic centers, treated an impressive 7020 patients who received at least one dose of study drug across 590 sites in 42 countries, attracting widespread attention from major media outlets.
 
 **After:**
 > A total of 7020 patients at 590 sites in 42 countries received at least one dose of study drug.
@@ -150,7 +150,7 @@ The following transitional and attribution phrases are **standard academic writi
 **Problem:** AI chatbots tack present participle ("-ing") phrases onto sentences to add fake depth.
 
 **Before:**
-> Hospitalization for heart failure occurred in 2.7% of patients receiving empagliflozin compared to 4.1% with placebo (HR 0.65; P = 0.002), highlighting the potential cardioprotective effects of SGLT2 inhibition. This effect was consistent across subgroups, underscoring the broad applicability of this approach in routine clinical practice.
+> Hospitalization for heart failure occurred in 2.7% of patients receiving empagliflozin compared to 4.1% with placebo (HR 0.65; 95% CI 0.50–0.85; P = 0.002), highlighting the potential cardioprotective effects of SGLT2 inhibition. This effect was consistent across subgroups defined by baseline characteristics, underscoring the broad applicability of this approach in routine clinical practice.
 
 **After:**
 > Hospitalization for heart failure occurred in 2.7% of patients receiving empagliflozin compared to 4.1% with placebo (hazard ratio 0.65; 95% CI 0.50–0.85; P = 0.002). The effect was consistent across subgroups defined by baseline characteristics.
@@ -164,7 +164,7 @@ The following transitional and attribution phrases are **standard academic writi
 **Problem:** LLMs have serious problems keeping a neutral tone, especially for "cultural heritage" topics.
 
 **Before:**
-> This groundbreaking study showcases the profound impact of empagliflozin and reflects a renewed commitment to improving cardiovascular care. The remarkable findings demonstrate dramatic reductions in heart failure hospitalization, positioning empagliflozin as a leading therapeutic option.
+> This groundbreaking study showcases the profound impact of empagliflozin in patients with type 2 diabetes and high cardiovascular risk, reflecting a renewed commitment to improving cardiovascular care. When added to standard of care, empagliflozin delivered remarkable, dramatic reductions in heart failure hospitalization and cardiovascular death, positioning it as a leading therapeutic option.
 
 **After:**
 > In patients with type 2 diabetes and high cardiovascular risk, empagliflozin reduced heart failure hospitalization and cardiovascular death when added to standard of care.
@@ -180,7 +180,7 @@ The following transitional and attribution phrases are **standard academic writi
 **IMPORTANT EXCEPTION:** Phrases like "Prior studies have shown that...", "Previous research has demonstrated...", or "Several studies have reported..." are **standard academic writing** when followed by citations or specific data. Do NOT flag these as AI patterns. Only flag attributions that are genuinely vague and unsupported.
 
 **Before:**
-> Studies have shown that SGLT2 inhibitors reduce cardiovascular events. Experts argue that these benefits may be related to hemodynamic effects. Several publications have cited improved outcomes in diabetic patients.
+> Studies have shown that SGLT2 inhibitors reduce cardiovascular events. Experts argue that these benefits may be related to hemodynamic effects. Several publications have cited the EMPA-REG OUTCOME trial, in which empagliflozin reduced cardiovascular death by 38% and hospitalization for heart failure by 35%.
 
 **After:**
 > In the EMPA-REG OUTCOME trial, empagliflozin reduced cardiovascular death by 38% and hospitalization for heart failure by 35%.
@@ -194,7 +194,7 @@ The following transitional and attribution phrases are **standard academic writi
 **Problem:** Many LLM-generated articles include formulaic "Challenges" sections.
 
 **Before:**
-> Despite its rigorous methodology, this trial faces several challenges typical of large clinical studies, including the lack of objective cardiac measurements. Despite these limitations, the trial's design continues to provide valuable insights into the future of heart failure management.
+> Despite its rigorous methodology, this trial faces several challenges typical of large clinical studies, including a diagnosis of heart failure at baseline that was based solely on investigator report, with no measures of cardiac function or biomarkers. Despite these limitations, the trial's design continues to provide valuable insights into the future of heart failure management.
 
 **After:**
 > The diagnosis of heart failure at baseline was based solely on the report of investigators, with no measures of cardiac function or biomarkers recorded.
@@ -250,7 +250,7 @@ The following transitional and attribution phrases are **standard academic writi
 **Problem:** LLMs force ideas into groups of three to appear comprehensive.
 
 **Before:**
-> SGLT2 inhibitors lower glucose, reduce cardiovascular events, and improve renal outcomes. These agents offer efficacy, safety, and tolerability. Benefits span metabolic, cardiovascular, and renal domains.
+> SGLT2 inhibitors lower glucose, reduce cardiovascular events, and slow kidney disease progression. These agents offer efficacy, safety, and tolerability. Benefits span metabolic, cardiovascular, and renal domains.
 
 **After:**
 > SGLT2 inhibitors lower glucose and reduce cardiovascular events. They also slow kidney disease progression.
@@ -264,7 +264,7 @@ The following transitional and attribution phrases are **standard academic writi
 **Rule:** Pick one term for each concept and use it consistently. Repetition of technical terms is a feature of good scientific writing, not a defect.
 
 **Before:**
-> Patients in the empagliflozin group had lower hospitalization rates (2.7% vs. 4.1%). Participants also demonstrated reduced cardiovascular mortality (3.7% vs. 5.9%). Subjects experienced decreased all-cause death rates (5.7% vs. 8.3%).
+> Patients in the empagliflozin group had lower rates of hospitalization for heart failure (2.7% vs. 4.1%). Participants also demonstrated reduced cardiovascular mortality (3.7% vs. 5.9%). Subjects experienced decreased all-cause death rates (5.7% vs. 8.3%).
 
 **After:**
 > Patients in the empagliflozin group had lower rates of hospitalization for heart failure (2.7% vs. 4.1%), cardiovascular death (3.7% vs. 5.9%), and all-cause mortality (5.7% vs. 8.3%).
@@ -276,7 +276,7 @@ The following transitional and attribution phrases are **standard academic writi
 **Problem:** LLMs use "from X to Y" constructions where X and Y aren't on a meaningful scale.
 
 **Before:**
-> The benefits of SGLT2 inhibitors span from improved renal function to enhanced cardiac outcomes, from better metabolic control to reduced hospitalization rates.
+> The benefits of SGLT2 inhibitors span from reduced hospitalization for heart failure to improved renal outcomes, from cardiac protection to modest reductions in HbA1c.
 
 **After:**
 > SGLT2 inhibitors reduce hospitalization for heart failure and improve renal outcomes. They also lower HbA1c modestly.
@@ -378,7 +378,7 @@ The following transitional and attribution phrases are **standard academic writi
 **Problem:** Vague upbeat endings.
 
 **Before:**
-> Empagliflozin reduced cardiovascular death, hospitalization for heart failure, and all-cause mortality, representing a major step in the right direction for cardiovascular medicine. The future looks bright for patients with type 2 diabetes as these exciting findings continue to reshape clinical practice.
+> Empagliflozin reduced heart failure hospitalization and cardiovascular death when added to standard care, with a benefit that was consistent in patients with and without heart failure at baseline, representing a major step in the right direction for cardiovascular medicine. The future looks bright for patients with type 2 diabetes as these exciting findings continue to reshape clinical practice.
 
 **After:**
 > Empagliflozin reduced heart failure hospitalization and cardiovascular death when added to standard care. The benefit was consistent in patients with and without heart failure at baseline.
@@ -561,7 +561,7 @@ Use "associated with" only when the relationship is genuinely a statistical/obse
 **Decision rule:** Delete the adverb mentally and ask whether any information was lost. If nothing was lost, it was ornamental — delete it or replace the emphasis with the concrete number or comparison it was gesturing at. If it conveyed magnitude, frequency, direction, or calibration, it is functional — keep it.
 
 **Before:**
-> Patients with both conditions face a markedly reduced survival, and adherence is critically important. The effect was remarkably consistent across subgroups, and rates of heart failure are increasingly rising in this population.
+> Patients with both conditions face a markedly reduced median survival of approximately 4 years, and poor adherence critically worsens prognosis. The effect was remarkably consistent across subgroups, and the prevalence of heart failure in this population is increasingly rising.
 
 **After:**
 > Patients with both conditions have a median survival of approximately 4 years, and poor adherence worsens prognosis. The effect was consistent across subgroups, and the prevalence of heart failure in this population is rising.
@@ -582,10 +582,10 @@ Use "associated with" only when the relationship is genuinely a statistical/obse
 3. Restructuring the two sentences into one with an explicit conjunction.
 
 **Before (the AI text):**
-> Additionally, empagliflozin reduced cardiovascular death, highlighting its cardioprotective effects. Additionally, the benefit appeared within months.
+> Additionally, empagliflozin reduced cardiovascular death, highlighting its cardioprotective effects. Additionally, the benefit appeared within months of treatment initiation.
 
 **Wrong fix (bare deletion — creates choppy asyndeton):**
-> Empagliflozin reduced cardiovascular death. The benefit appeared within months.
+> Empagliflozin reduced cardiovascular death. The benefit appeared within months of treatment initiation.
 
 **Right fix (connective preserved):**
 > Empagliflozin also reduced cardiovascular death, and this benefit appeared within months of treatment initiation.
@@ -653,7 +653,7 @@ Use "associated with" only when the relationship is genuinely a statistical/obse
 
 ### 34. Sentence Rhythm and Structural Diversity (Burstiness), in the service of clarity
 
-**Burstiness is required, but never at the cost of clarity.** Experimental testing (desklib logit 5.54→2.47, a 55% reduction) showed that restructuring sentence rhythm accounts for ~90% of the achievable reduction in AI-detection scores. AI-generated text converges on a narrow band of sentence lengths (typically 15-25 words) with uniform Subject-Verb-Object openings; human writing mixes short and long sentences with varied openings. Every paragraph of the output must show this variation. Obtain it only through edits that keep actors, comparisons, conditions, and logical links explicit (see Reader clarity before compression).
+**Burstiness is required, but never at the cost of clarity.** Experimental testing (desklib logit 5.54→2.47, a 55% reduction) showed that restructuring sentence rhythm accounts for ~90% of the achievable reduction in AI-detection scores. AI-generated text converges on a narrow band of sentence lengths (typically 15-25 words) with uniform Subject-Verb-Object openings; human writing mixes short and long sentences with varied openings. Every paragraph of three or more sentences must show this variation (see the Benchmark below for the criterion). Obtain it only through edits that keep actors, comparisons, conditions, and logical links explicit (see Reader clarity before compression).
 
 **What to change (structure only, not vocabulary):**
 1. **Split sentences that stack conditions or comparisons.** A sentence that makes readers hold several conditions in memory is both a clarity defect and a source of long-sentence uniformity. Split it so each sentence carries one comparison or condition.
@@ -667,21 +667,23 @@ Use "associated with" only when the relationship is genuinely a statistical/obse
 - Do not merge sentences in a way that hides which comparison or condition applies to which result
 - Do not alter technical vocabulary, data, or the author's approved strength of interpretation
 - Do not break the connective structure (Pattern 27/30/31 still apply)
-- Do not change the voice (active/passive) of the original unless Pattern 9 applies
+- Do not change the voice (active/passive) of the original unless this is needed to make the actor explicit (see Reader clarity before compression)
 
 **Interaction with Pattern 29 (ornamental adverbs):** Deleting an adverb like "markedly" was experimentally shown to INCREASE AI-detection scores (logit +0.72 worse) when it left a shorter sentence that fit the uniform cadence. After removing ornamental adverbs, re-check the paragraph's rhythm; if it has become uniform, restructure one of the supporting sentences.
 
-**Before (uniform rhythm, all sentences 18-22 words):**
-> All three DACS had elevated PRRs for pantry overflow compared with comparator services. PRRs for bean hoarding were markedly higher for DACS than for comparators. Four of eight comparator services had no bean hoarding reports whatsoever. The remaining four comparator services had PRRs that were below one.
+**Before (uniform rhythm: 16, 15, 14, 13 words):**
+> All three DACS had elevated PRRs for pantry overflow compared with comparator services (PRR <= 2.07). PRRs for bean hoarding were markedly higher for DACS (MorningHarbor 77.89, CopperKettle 3.92, DailyGrind 3.24). Four of eight comparator services had no bean hoarding reports whatsoever in the database. The remaining four comparator services, by contrast, had PRRs that were below one.
 
-**After (varied rhythm: 15, 28, 18 words):**
+**After (more varied rhythm: 16, 12, 18 words):**
 > All three DACS had elevated PRRs for pantry overflow compared with comparator services (PRR <= 2.07). PRRs for bean hoarding were higher (MorningHarbor 77.89, CopperKettle 3.92, DailyGrind 3.24). Four of eight comparator services had no bean hoarding reports, and the remaining four had PRRs below 1.
 
-**Benchmark:** In well-written human medical papers, sentence lengths within a single paragraph range from 12 to 55 words, with standard deviations of 10-15 words. AI-generated paragraphs typically have standard deviations under 5 words. After humanizing, check that each paragraph contains at least one sentence notably shorter and one notably longer than the average.
+**Benchmark:** In well-written human medical papers, sentence lengths within a single paragraph typically range from about 10 to 55 words, with standard deviations of 10-15 words; the author's short claim sentences may be shorter. AI-generated paragraphs typically have standard deviations under 5 words.
+
+**Criterion (used in the self-audit and the final rhythm check):** A paragraph of three or more sentences is too uniform if all of its sentences fall within a 5-word range of each other. Restructure it until at least one sentence is notably shorter and one notably longer than the paragraph average.
 
 **Clarity example** (illustrative, not research evidence). Splitting a compressed sentence often adds rhythm and clarity together:
-- Dense: `Using matched samples and adjusted models, exposure predicted poorer outcomes across settings despite attenuation.`
-- Clearer, if supported by the study: `We compared matched samples from both settings. The association between exposure and mortality was weaker after adjustment but remained present in both settings.`
+- Dense: `Using matched samples from both settings and adjusted models, exposure predicted higher mortality in both settings despite attenuation.`
+- Clearer: `We compared matched samples from both settings. The association between exposure and mortality was weaker after adjustment but remained present in both settings.`
 
 Name the actual exposure and adjustment variables where needed for the argument. Do not invent them to complete an ambiguous sentence. See [reader clarity](references/reader-clarity.md) for the full audit.
 
@@ -707,7 +709,7 @@ Name the actual exposure and adjustment variables where needed for the argument.
 
 6. **Ask yourself: "What makes this draft still look AI-generated?"** List any remaining tells briefly. Common survivors include:
    - Omitted comparison conditions or ambiguous pronouns that force readers to reconstruct meaning
-   - Sentence lengths still too uniform (check: does each paragraph have at least one sentence notably shorter and one notably longer than average?)
+   - Sentence lengths still too uniform (check the Pattern 34 criterion: in paragraphs of three or more sentences, do all sentences fall within a 5-word range?)
    - Sentence openings still repetitive (check: do three+ consecutive sentences start the same way?)
    - Vocabulary tells that slipped through (check Patterns 1, 7, 29 word lists)
    - Broken connective chain (check Pattern 31 checklist)
@@ -717,7 +719,7 @@ Name the actual exposure and adjustment variables where needed for the argument.
 
 8. **EM DASH CHECK:** Search your output for "—". If ANY remain, replace them. Zero em dashes allowed.
 9. **PARAGRAPH COHESION CHECK (Pattern 31):** Re-read every paragraph top to bottom: (a) first sentence states the paragraph's claim; (b) every subsequent sentence is linked to the previous one by a connective or echoed key word; (c) paragraph-opening contrast/continuity markers survive where the argument needs them. If any link was broken, repair it. Choppy, disconnected prose is NOT acceptable humanized output.
-10. **RHYTHM AND READABILITY CHECK (Pattern 34):** This check is mandatory. (a) Scan sentence lengths across each paragraph. If all sentences fall within a 5-word range of each other, restructure at least one supporting sentence (split a sentence that stacks conditions, combine related supporting sentences, or reposition clauses). Never merge a short claim sentence to do this. (b) Re-read for one-pass comprehension: no restructuring may hide an actor, comparison, or condition. Remove redundant summaries; preserve concrete interpretation, necessary qualifications, and approved author opinions.
+10. **RHYTHM AND READABILITY CHECK (Pattern 34):** This check is mandatory. (a) Apply the Pattern 34 criterion to every paragraph of three or more sentences. If all sentences fall within a 5-word range of each other, restructure at least one supporting sentence (split a sentence that stacks conditions, combine related supporting sentences, or reposition clauses). Never merge a short claim sentence to do this. (b) Re-read for one-pass comprehension: no restructuring may hide an actor, comparison, or condition. Remove redundant summaries; preserve concrete interpretation, necessary qualifications, and approved author opinions.
 11. Present the humanized version.
 
 ## Output Format
@@ -732,11 +734,11 @@ Provide:
 ## Full Example
 
 **Before (AI-sounding):**
-> Heart failure represents a pivotal challenge in the evolving landscape of diabetes care, underscoring the critical importance of addressing cardiovascular comorbidities. This groundbreaking study showcases the profound impact of empagliflozin, a pivotal therapeutic option that serves as a cornerstone of modern cardiovascular medicine.
+> Heart failure represents a pivotal challenge in the evolving landscape of diabetes care, affecting more than one in five patients with type 2 diabetes aged over 65 years and underscoring the critical importance of addressing cardiovascular comorbidities. This groundbreaking study showcases the profound impact of empagliflozin, a pivotal therapeutic option that serves as a cornerstone of modern cardiovascular medicine: when added to standard of care in patients with type 2 diabetes and high cardiovascular risk, it reduced heart failure hospitalization and cardiovascular death.
 >
-> Studies have shown that SGLT2 inhibitors reduce cardiovascular events. Additionally, empagliflozin reduced the risk of hospitalization for heart failure or cardiovascular death by 34%—a remarkable finding—highlighting the cardioprotective effects of this intervention. The number needed to treat of 35 over 3 years underscores the crucial clinical value of this therapeutic approach.
+> Studies have shown that SGLT2 inhibitors reduce cardiovascular events. Additionally, in the EMPA-REG OUTCOME trial, empagliflozin reduced the risk of hospitalization for heart failure or cardiovascular death by 34%—a remarkable finding—highlighting the cardioprotective effects of this intervention. The number needed to treat of 35 over 3 years to prevent one event underscores the crucial clinical value of this therapeutic approach.
 >
-> Despite challenges typical of large clinical trials, including the lack of objective cardiac measurements, the trial's strategic design continues to provide valuable insights for the future outlook of heart failure management. The future looks bright for patients with type 2 diabetes as these exciting findings continue to reshape clinical practice.
+> Despite challenges typical of large clinical trials, including a diagnosis of heart failure at baseline that relied solely on investigator report without measures of cardiac function or biomarkers, the trial's strategic design continues to provide valuable insights for the future outlook of heart failure management. With a benefit that was consistent in patients with and without heart failure at baseline, the future looks bright for patients with type 2 diabetes as these exciting findings continue to reshape clinical practice.
 
 **After (Humanized):**
 > Heart failure is highly prevalent in patients with diabetes, occurring in more than one in five patients with type 2 diabetes aged over 65 years. In patients with type 2 diabetes and high cardiovascular risk, empagliflozin reduced heart failure hospitalization and cardiovascular death when added to standard of care.
@@ -746,10 +748,10 @@ Provide:
 > The diagnosis of heart failure at baseline was based solely on the report of investigators, with no measures of cardiac function or biomarkers recorded. Empagliflozin reduced heart failure hospitalization and cardiovascular death when added to standard care. The benefit was consistent in patients with and without heart failure at baseline.
 
 **Changes made:**
-- Eliminated all em dashes ("—") per Pattern 13 zero-tolerance rule
+- Eliminated all em dashes ("—") per Pattern 13
 - Removed significance inflation ("pivotal challenge", "evolving landscape", "groundbreaking", "cornerstone")
 - Removed promotional language ("profound impact", "remarkable finding", "exciting findings")
-- Removed unsupported vague attributions ("Studies have shown" with no citation) and replaced with specific trial name (note: "Prior studies have shown that..." followed by citations would be preserved)
+- Removed the unsupported vague attribution ("Studies have shown" with no citation) and let the specific trial result carry the claim (note: "Prior studies have shown that..." followed by citations would be preserved)
 - Removed superficial -ing phrases ("underscoring", "highlighting")
 - Removed copula avoidance ("serves as") in favor of "is"
 - Removed AI vocabulary ("crucial", "pivotal") and ornamental intensifiers ("remarkable") — note that the "Additionally" disappeared only because its whole sentence was rewritten; a single "Additionally" per paragraph is acceptable and would otherwise be kept (Pattern 7 EXCEPTION)
@@ -757,6 +759,8 @@ Provide:
 - Removed generic positive conclusion ("The future looks bright", "continue to reshape")
 - Fixed grammar ("The number needed to treat of 35" → "was 35")
 - Used simple sentence structures and specific data
+- Split long sentences that stacked conditions (the baseline-diagnosis limitation now stands as its own long sentence, followed by two shorter ones)
+- No `[verify]` or `[DATA NEEDED]` markers were needed: every fact in the After appears in the Before
 
 ---
 
