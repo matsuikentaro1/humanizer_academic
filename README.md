@@ -189,6 +189,10 @@ This is a paper I wrote. Using PubMed records, I measured how frequently LLMs su
 - **1.1.0** - Added LLM-specific word choice patterns (19-23), preserved legitimate academic phrases, fixed hedging guidance consistency
 - **1.0.0** - Initial release adapted for academic medical writing
 
+## Contributors
+
+- [@kaicot](https://github.com/kaicot): found that the short-sentence rule still referred to a removed rhythm check ([#3](https://github.com/matsuikentaro1/humanizer_academic/pull/3)), found the broken Pattern 15 example, and proposed the data-sourcing rule for "Be specific", the calmer Pattern 13 wording, and the note on illustrative examples ([#4](https://github.com/matsuikentaro1/humanizer_academic/pull/4)). These were adopted in v2.3.0.
+
 ## License
 
 MIT
