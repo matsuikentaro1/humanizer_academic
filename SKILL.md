@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 2.3.0
+version: 2.4.0
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -38,7 +38,7 @@ When given text to humanize:
 4. **Rewrite problematic sections** - Replace AI-isms with precise academic language
 5. **Preserve meaning** - Keep the scientific content and data intact
 6. **Maintain academic tone** - Match the formal, objective style of medical journals
-7. **Be specific** - Replace vague claims with real data and citations. Prefer data from the manuscript itself or from sources the author supplied. If you draw a figure or reference from your own knowledge, insert it but mark it `[verify: <source>]` so the author can confirm it. If no reliable data is available, insert a placeholder such as `[DATA NEEDED: effect size and trial]` rather than inventing specifics
+7. **Be specific, using only supplied facts** - Replace vague claims with concrete data and citations only when those data appear in the manuscript itself or in sources the author supplied. Never insert a figure, statistic, named entity, or reference from your own knowledge into the rewritten text. If the needed data are not supplied, keep the author's wording or insert a placeholder such as `[DATA NEEDED: effect size and trial]`. If you can recall a plausible candidate, list it separately under "Candidate data for the author" in the Output Format (unverified, not inserted)
 8. **Follow the two-pass process** - Draft, self-audit for remaining AI tells, then finalize (see Process section)
 
 ---
@@ -111,7 +111,7 @@ The following transitional and attribution phrases are **standard academic writi
 
 ---
 
-**About the examples:** In each Before/After pair, the facts are the same and only the wording changes; an After may drop unsupported claims, but it does not add facts. Many After texts are passages from published, human-written papers (see Examples Source in the README), and each Before is an AI-styled rewrite of the same content. When editing, never add facts that are not in the input: follow the "Be specific" rule in Your Task: use facts from the input or from sources the author supplied, mark facts drawn from your own knowledge with `[verify: <source>]`, and use a `[DATA NEEDED: ...]` placeholder when no reliable data is available.
+**About the examples:** In each Before/After pair, the facts are the same and only the wording changes; an After may drop unsupported claims, but it does not add facts. Many After texts are passages from published, human-written papers (see Examples Source in the README), and each Before is an AI-styled rewrite of the same content. When editing, never add facts that are not in the input: follow the "Be specific" rule in Your Task: use facts from the input or from sources the author supplied, use a `[DATA NEEDED: ...]` placeholder when the needed data are not supplied, and list any recalled candidates outside the rewritten text.
 
 ## CONTENT PATTERNS
 
@@ -717,17 +717,20 @@ Name the actual exposure and adjustment variables where needed for the argument.
 
 ### Mandatory final checks
 
-8. **EM DASH CHECK:** Search your output for "—". If ANY remain, replace them. Zero em dashes allowed.
-9. **PARAGRAPH COHESION CHECK (Pattern 31):** Re-read every paragraph top to bottom: (a) first sentence states the paragraph's claim; (b) every subsequent sentence is linked to the previous one by a connective or echoed key word; (c) paragraph-opening contrast/continuity markers survive where the argument needs them. If any link was broken, repair it. Choppy, disconnected prose is NOT acceptable humanized output.
-10. **RHYTHM AND READABILITY CHECK (Pattern 34):** This check is mandatory. (a) Apply the Pattern 34 criterion to every paragraph of three or more sentences. If all sentences fall within a 5-word range of each other, restructure at least one supporting sentence (split a sentence that stacks conditions, combine related supporting sentences, or reposition clauses). Never merge a short claim sentence to do this. (b) Re-read for one-pass comprehension: no restructuring may hide an actor, comparison, or condition. Remove redundant summaries; preserve concrete interpretation, necessary qualifications, and approved author opinions.
-11. Present the humanized version.
+8. **FIDELITY CHECK:** Compare the output with the input and any author-supplied sources. Every number, unit, statistic, date, named entity (trial, drug, cohort, instrument, author), and citation in the output must also appear in the input or in those sources, and every assertion must be grounded in the input. If anything is not, revert that span to the input's wording or replace it with a `[DATA NEEDED: ...]` placeholder. Do not rewrite around the problem.
+9. **EM DASH CHECK:** Search your output for "—". If ANY remain, replace them. Zero em dashes allowed.
+10. **PARAGRAPH COHESION CHECK (Pattern 31):** Re-read every paragraph top to bottom: (a) first sentence states the paragraph's claim; (b) every subsequent sentence is linked to the previous one by a connective or echoed key word; (c) paragraph-opening contrast/continuity markers survive where the argument needs them. If any link was broken, repair it. Choppy, disconnected prose is NOT acceptable humanized output.
+11. **RHYTHM AND READABILITY CHECK (Pattern 34):** This check is mandatory. (a) Apply the Pattern 34 criterion to every paragraph of three or more sentences. If all sentences fall within a 5-word range of each other, restructure at least one supporting sentence (split a sentence that stacks conditions, combine related supporting sentences, or reposition clauses). Never merge a short claim sentence to do this. (b) Re-read for one-pass comprehension: no restructuring may hide an actor, comparison, or condition. Remove redundant summaries; preserve concrete interpretation, necessary qualifications, and approved author opinions.
+12. Present the humanized version.
 
 ## Output Format
 
 Provide:
 1. The rewritten text
 2. A brief summary of changes made, noting which patterns were applied and any rhythm restructuring performed
-3. A list of every `[verify: ...]` and `[DATA NEEDED: ...]` marker inserted, so the author can check or fill each one
+3. Fidelity check result: confirm that every number, statistic, named entity, and citation in the output appears in the input or in author-supplied sources, and name any span you reverted
+4. A list of every `[DATA NEEDED: ...]` placeholder inserted, so the author can fill each one
+5. If any: "Candidate data for the author (unverified, not inserted)", listing figures or references you recalled that might fill a placeholder or support a vague claim. The author must verify each one against the primary source before using it
 
 ---
 
@@ -760,7 +763,7 @@ Provide:
 - Fixed grammar ("The number needed to treat of 35" → "was 35")
 - Used simple sentence structures and specific data
 - Split long sentences that stacked conditions (the baseline-diagnosis limitation now stands as its own long sentence, followed by two shorter ones)
-- No `[verify]` or `[DATA NEEDED]` markers were needed: every fact in the After appears in the Before
+- Fidelity check passed: every number, trial name, and statistic in the After appears in the Before, so no `[DATA NEEDED]` placeholders or candidate data were needed
 
 ---
 
