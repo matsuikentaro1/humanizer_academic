@@ -14,6 +14,8 @@ The main instructions are in `SKILL.md`, with reusable examples in `references/r
 
 That is all. No installation.
 
+You do not need the checker script in a browser chat; the skill does the same checks by hand. If your chat can run code, you can also upload [`scripts/humanizer_check.py`](scripts/humanizer_check.py), and the skill will run it on its draft.
+
 ### In Claude Code
 
 Clone into your skills directory:
