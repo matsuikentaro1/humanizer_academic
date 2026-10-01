@@ -2,7 +2,7 @@
 
 A skill that removes signs of AI-generated writing from academic medical papers, making them sound more natural and professionally written.
 
-The main instructions are in `SKILL.md`, with reusable examples in `references/reader-clarity.md`. Both are plain text, so you do not need Claude Code to use them.
+The main instructions are in `SKILL.md`, with reusable examples in `references/reader-clarity.md`. Both are plain text, so you do not need Claude Code to use them. `scripts/humanizer_check.py` is an optional checker for agents that can run commands; the skill works without it.
 
 ## Usage
 
@@ -26,9 +26,26 @@ git clone https://github.com/matsuikentaro1/humanizer_academic.git ~/.claude/ski
 Or, from a downloaded copy of the repository:
 
 ```bash
-mkdir -p ~/.claude/skills/humanizer_academic/references
+mkdir -p ~/.claude/skills/humanizer_academic/references ~/.claude/skills/humanizer_academic/scripts
 cp SKILL.md ~/.claude/skills/humanizer_academic/
 cp references/reader-clarity.md ~/.claude/skills/humanizer_academic/references/
+cp scripts/humanizer_check.py ~/.claude/skills/humanizer_academic/scripts/
+```
+
+#### Optional checker
+
+Language models miscount words and tend to grade their own drafts generously. When Python is available, the skill runs `scripts/humanizer_check.py` once on its draft before the final checks. The script uses only the standard library and reports:
+
+- the number of words in each sentence, paragraph by paragraph, and the paragraphs that fail the Pattern 34 rhythm criterion
+- em dashes and curly quotes
+- three consecutive sentences with the same first word, and "Additionally" used more than once in a paragraph
+- numbers that appear in the revision but not in the original
+- words named in the patterns, listed as candidates to read in context
+
+It gives no score, and a candidate word is not a violation. If Python is missing, the skill does the same checks by hand. You can also run it yourself:
+
+```bash
+python scripts/humanizer_check.py revised.txt --original original.txt
 ```
 
 The skill loads itself when it is relevant, so you can simply ask:
@@ -174,6 +191,7 @@ This is a paper I wrote. Using PubMed records, I measured how frequently LLMs su
 
 ## Version History
 
+- **2.5.0** - The instructions now follow their own rules. A model copies the style of its prompt as well as the content, so `SKILL.md` no longer uses em dashes in its own prose (31 removed; the character remains only where Pattern 13 has to show it), bold text, capitalized emphasis such as "NOT", Title Case headings, or "Key principle" labels. The rules themselves are unchanged. Added `scripts/humanizer_check.py`, an optional standard-library checker that counts words per sentence for the Pattern 34 criterion, finds em dashes, curly quotes and repeated openers, and lists numbers that appear in the revision but not in the original. It reports candidates without a score, and the skill falls back to the manual checks when Python is unavailable.
 - **2.4.0** - Keep model-recalled figures and citations out of the rewritten text. "Be specific" now uses only data from the manuscript or author-supplied sources; the `[verify: ...]` in-text insertion is removed. A new mandatory fidelity check confirms that every number, statistic, named entity, and citation in the output appears in the input, reverting any span that does not. Recalled candidates are listed separately in the output as unverified and not inserted (thanks to @kaicot for issue #5).
 - **2.3.0** - Restore burstiness as a required step (Pattern 34 and the mandatory rhythm check) while keeping the v2.2 reader-clarity priority and the v2.1.1 rule that short claim sentences stay short. Rhythm variation now comes from splitting sentences that stack conditions, combining related supporting sentences, and varying openings. "Be specific" now replaces vague claims with real data, marks facts drawn from model knowledge with `[verify: ...]`, and uses `[DATA NEEDED: ...]` placeholders instead of inventing specifics. Pattern 13 keeps the zero-em-dash rule with a calmer tone (thanks to @kaicot for PR #3 and #4). Example Befores now contain every fact in their Afters, so the examples demonstrate style edits without adding facts; the Pattern 34 word counts, the rhythm criterion, and a wrong cross-reference were also corrected.
 - **2.2.0** - Prioritize reader clarity over compressed prose and forced rhythm variation. Add eight reusable examples, sentence-level deletion guidance, abstract consistency checks, and protection for approved author opinions and intentional section spacing. Include the new reference file when installing or using the skill in a chat.
