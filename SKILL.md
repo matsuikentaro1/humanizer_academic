@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 2.5.0
+version: 2.5.1
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -77,6 +77,35 @@ Author's structural habits:
 - No em dashes (author does not use them)
 
 How to apply: When removing an AI pattern, ask "how would the author have written this?" and draw from the repertoire above. Do not introduce constructions the author would not use, such as staccato drama. Preserve explicitly approved first-person opinions and expectations; do not weaken them merely to match a generic academic voice.
+
+---
+
+## Subject and verb compatibility
+
+Check whether the subject naturally performs the action expressed by the verb and whether the wording makes the intended actor and source of evidence clear. This is a contextual clarity check, not a prohibition on inanimate subjects or a blacklist of verbs.
+
+The main target is anthropomorphism: a non-human subject (a report, figure, section, analysis, or course of treatment) written as if it made a human judgment. Verbs of display and evidence fit such subjects (show, present, indicate, suggest, report). Verbs of judgment and decision belong to people (determine, decide, judge, exclude, acknowledge, recognize). When a non-human subject carries a verb of the second kind and the judgment is in fact the authors', name the authors. The two lists illustrate the distinction; decide each case by its meaning in context.
+
+Preserve conventional constructions when the relationship is clear: "Figure 1 shows..." describes a display, "These findings suggest..." presents evidence for an inference, and "This test distinguishes A from B" describes a test's discriminative function.
+
+When the intended meaning is an author's judgment, interpretation, or revision, avoid assigning that action to reports, figures, sections, or wording if doing so obscures who judged or acted. Name the actor and retain the basis of the judgment. In a response to reviewers, stating what the authors changed is often clearer than describing a document as if it made the change.
+
+Examples (illustrative wording, not additional clinical facts):
+- Indirect: "The available reports cannot distinguish a reduction in nightmare occurrence from reduced dream recall."
+- Clearer: "We cannot determine from the patient's account whether nightmares ceased or whether he no longer recalled them."
+- Indirect when describing a revision: "Figure 1 separates early recurrence from the later report."
+- Clearer: "We have revised Figure 1 to distinguish early recurrence from the later report."
+- Indirect: "The revised case specifies the symptoms assessed by interview."
+- Clearer: "We have specified in the Case description which symptoms we assessed by interview."
+- Indirect: "This single course cannot exclude spontaneous fluctuation."
+- Clearer: "We cannot exclude spontaneous fluctuation on the basis of this single treatment course."
+- Indirect: "The Methods section excludes participants with missing sleep diaries."
+- Clearer, keeping the passive voice that Methods sections use: "Participants with missing sleep diaries were excluded."
+- Keep as written: "Previous studies suggest that nightmares may recur after treatment is discontinued." Studies present evidence for an inference, so the subject fits the verb. Do not rewrite this as "The authors of previous studies suggest..." or "We consider that...".
+
+These alternatives are context-dependent improvements, not declarations that the original constructions are universally incorrect. For example, "The review concluded that..." can naturally refer to the reviewing authors, and "The analysis considers..." can describe the scope of an analysis. Do not mechanically replace inanimate subjects with "we," introduce unsupported actors, or alter the strength of the interpretation. Preserve verbatim reviewer comments and source quotations; revise manuscript quotations only when the corresponding manuscript is also revised within the authorized scope.
+
+In the final audit, ask: does the subject naturally perform this action, and can the reader identify who is judging or acting and on what basis? Revise only when a non-human subject is made to judge or decide in the authors' place, or when the answer exposes ambiguity or unnecessarily indirect wording. Preserve natural factual statements and established academic expressions.
 
 ---
 
@@ -711,6 +740,7 @@ Name the actual exposure and adjustment variables where needed for the argument.
 
 6. Ask yourself: "What makes this draft still look AI-generated?" List any remaining tells briefly. Common survivors include:
    - Omitted comparison conditions or ambiguous pronouns that force readers to reconstruct meaning
+   - A subject that does not naturally perform its verb, or wording that hides who judged or acted and on what basis (see Subject and verb compatibility)
    - Sentence lengths still too uniform (check the Pattern 34 criterion: in paragraphs of three or more sentences, do all sentences fall within a 5-word range?)
    - Sentence openings still repetitive (check: do three+ consecutive sentences start the same way?)
    - Vocabulary tells that slipped through (check Patterns 1, 7, 29 word lists)
