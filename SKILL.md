@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 2.5.1
+version: 2.6.0
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -53,7 +53,7 @@ Preserve intentional blank lines at major section boundaries and follow the auth
 
 The primary author writes medical research papers in a characteristic style (based on analysis of pre-2023 published work). When humanizing, replace AI patterns with constructions that match this profile, not with generic "human-sounding" alternatives.
 
-Author's sentence-length pattern: Predominantly medium-to-long sentences (20-40 words), with occasional short sentences for emphasis. Rarely uses very short (<10 word) sentences. Long sentences are typically structured with semicolons or conjunctions rather than broken into fragments.
+Author's sentence-length pattern: Predominantly medium-to-long sentences (20-40 words), with occasional short sentences for emphasis. Rarely uses very short (<10 word) sentences. Long sentences are typically structured with semicolons or with conjunctions that name the relation (because, although, whereas) rather than broken into fragments. The author does not build long sentences by chaining independent clauses with ", and" (see Pattern 35).
 
 Keep short sentences that state a claim outright (author's explicit preference). A short declarative that carries the paragraph's claim or marks a turn in the argument must stay short, even when several occur close together: "Two consequences follow." / "The largest difference was cost." / "Speed differed less." / "Performance also depended on the prompt." Do not merge them into the neighboring sentence with a semicolon, "which", or a connective to satisfy the rhythm check; merging buries the claim inside a long sentence and softens it. Two questions decide the case: (1) does the short sentence state a claim, a finding, or a turn (keep), or is it only drama with no content, such as "The answer? Surprising." (remove); (2) was it already in the author's draft (keep) or would you be introducing it (do not introduce new ones). Rhythm diversity is to be obtained elsewhere in the paragraph.
 
@@ -185,6 +185,8 @@ Before:
 
 After:
 > Hospitalization for heart failure occurred in 2.7% of patients receiving empagliflozin compared to 4.1% with placebo (hazard ratio 0.65; 95% CI 0.50–0.85; P = 0.002). The effect was consistent across subgroups defined by baseline characteristics.
+
+Deleting the tail usually leaves a complete sentence; end it there. Do not fill the space with ", and this ..." or ", and it ...". If the tail carried real content, state it with a phrase or clause that names its relation to the main clause (see Pattern 35).
 
 ---
 
@@ -595,7 +597,7 @@ Before:
 > Patients with both conditions face a markedly reduced median survival of approximately 4 years, and poor adherence critically worsens prognosis. The effect was remarkably consistent across subgroups, and the prevalence of heart failure in this population is increasingly rising.
 
 After:
-> Patients with both conditions have a median survival of approximately 4 years, and poor adherence worsens prognosis. The effect was consistent across subgroups, and the prevalence of heart failure in this population is rising.
+> Patients with both conditions have a median survival of approximately 4 years; poor adherence worsens prognosis. The effect was consistent across subgroups. In this population, the prevalence of heart failure is rising.
 
 Benchmark (how well-written human papers use -ly adverbs): In strong epidemiology writing, the -ly adverbs almost always quantify or calibrate rather than decorate. Typical examples read like "the highest-exposure group consistently had lower mortality risk", "the exposure slightly decreases along the gradient", or "the study showed a modest association between the exposure and better self-rated health". Each adverb ("consistently", "slightly", "modest") carries information about frequency, magnitude, or calibration; none merely decorates. Aim for that profile.
 
@@ -610,7 +612,7 @@ Problem: When an AI-pattern sentence opener is removed (an "Additionally," beyon
 Rule: edit, don't excise. Whenever you remove a sentence-initial transition or a clause that carried the link to the previous sentence, restore the link by one of:
 1. Substituting a natural connective: "In addition," / "Moreover," / "However," / "By contrast," / "We also found that ..."
 2. Echoing a key noun from the previous sentence at the start of the new sentence (old-to-new information flow): "... was associated with nonrestorative sleep. Nonrestorative sleep, in turn, ..."
-3. Restructuring the two sentences into one with an explicit conjunction.
+3. Restructuring the two sentences into one with a conjunction that names the relation (because, although, whereas) or a semicolon. A default ", and this ..." does not restore the link; it hides it (see Pattern 35).
 
 Before (the AI text):
 > Additionally, empagliflozin reduced cardiovascular death, highlighting its cardioprotective effects. Additionally, the benefit appeared within months of treatment initiation.
@@ -618,8 +620,11 @@ Before (the AI text):
 Wrong fix (bare deletion, which creates choppy asyndeton):
 > Empagliflozin reduced cardiovascular death. The benefit appeared within months of treatment initiation.
 
-Right fix (connective preserved):
+Also wrong (the gap is filled with a default ", and this", which leaves the relation unnamed):
 > Empagliflozin also reduced cardiovascular death, and this benefit appeared within months of treatment initiation.
+
+Right fix (a connective plus an echoed noun):
+> Empagliflozin also reduced cardiovascular death. This benefit appeared within months of treatment initiation.
 
 Division of labor with Pattern 27: Pattern 27 lists the discourse markers you must not *remove*; Pattern 30 governs what you must do when an edit *would otherwise leave a gap*: replace or restructure, never just cut.
 
@@ -674,7 +679,7 @@ Before:
 > Empagliflozin reduced cardiovascular death by 38%. This is a noteworthy finding. The benefit was consistent across subgroups. This observation is of clinical significance.
 
 After:
-> Empagliflozin reduced cardiovascular death by 38%, and the benefit was consistent across subgroups.
+> Empagliflozin reduced cardiovascular death by 38%. The benefit was consistent across subgroups.
 
 Principle: If the finding is genuinely significant, show why: state the mechanism, the clinical consequence, or the contrast with prior evidence. A sentence that merely labels a finding as "important" without explaining what makes it important adds no information and should be deleted. When deleting, apply Pattern 30 (connective-preserving edits) to maintain flow.
 
@@ -688,7 +693,7 @@ Burstiness is required, but never at the cost of clarity. Experimental testing (
 
 What to change (structure only, not vocabulary):
 1. Split sentences that stack conditions or comparisons. A sentence that makes readers hold several conditions in memory is both a clarity defect and a source of long-sentence uniformity. Split it so each sentence carries one comparison or condition.
-2. Combine adjacent supporting sentences (not claim sentences) when they share a logical relation, using a conjunction or a semicolon that names that relation. This is a characteristic of the author's style.
+2. Combine adjacent supporting sentences (not claim sentences) when they share a logical relation, using a conjunction or a semicolon that names that relation. This is a characteristic of the author's style. A comma plus "and" names no relation, so it is not a valid way to combine sentences for rhythm; use it at most once per paragraph, and only for genuinely parallel facts (Pattern 35).
 3. Diversify sentence openings. If three consecutive sentences start with a noun-phrase subject, restructure one to open with a prepositional phrase ("In this meta-analysis,"), a subordinate clause ("Although the sample was small,"), or a connective ("However,").
 4. Relocate clause elements. Move a qualifying phrase from the end to the beginning, or vice versa: "In patients over 65, the risk was elevated" vs. "The risk was elevated in patients over 65."
 
@@ -706,7 +711,7 @@ Before (uniform rhythm: 16, 15, 14, 13 words):
 > All three DACS had elevated PRRs for pantry overflow compared with comparator services (PRR <= 2.07). PRRs for bean hoarding were markedly higher for DACS (MorningHarbor 77.89, CopperKettle 3.92, DailyGrind 3.24). Four of eight comparator services had no bean hoarding reports whatsoever in the database. The remaining four comparator services, by contrast, had PRRs that were below one.
 
 After (more varied rhythm: 16, 12, 18 words):
-> All three DACS had elevated PRRs for pantry overflow compared with comparator services (PRR <= 2.07). PRRs for bean hoarding were higher (MorningHarbor 77.89, CopperKettle 3.92, DailyGrind 3.24). Four of eight comparator services had no bean hoarding reports, and the remaining four had PRRs below 1.
+> All three DACS had elevated PRRs for pantry overflow compared with comparator services (PRR <= 2.07). PRRs for bean hoarding were higher (MorningHarbor 77.89, CopperKettle 3.92, DailyGrind 3.24). Among the eight comparator services, four had no bean hoarding reports; the remaining four had PRRs below 1.
 
 Benchmark: In well-written human medical papers, sentence lengths within a single paragraph typically range from about 10 to 55 words, with standard deviations of 10-15 words; the author's short claim sentences may be shorter. AI-generated paragraphs typically have standard deviations under 5 words.
 
@@ -720,6 +725,34 @@ Name the actual exposure and adjustment variables where needed for the argument.
 
 ---
 
+### 35. Independent clauses chained with ", and" (especially ", and this/it ...")
+
+Words to watch: ", and this ...", ", and it ...", ", and these ...", two or more ", and" clause joins in the same paragraph
+
+Problem: LLMs join independent clauses with ", and" by default, whatever the relation between them. A cause, a contrast, or a specification then reads as a plain list, and the reader has to reconstruct the logic. When the second clause opens with "this" or "it", the referent is often unclear as well (see example 2 in [reader clarity](references/reader-clarity.md)). The construction appears most often where other edits leave a gap: after an -ing tail is deleted (Pattern 3), when a link is restored (Pattern 30), or when sentences are merged for rhythm (Pattern 34).
+
+Rule: before joining two independent clauses with ", and", name the relation between them and write it out.
+- Cause or grounds: "because", "as", or two sentences with "Thus,"
+- Contrast: "whereas", "while", or two sentences with "However,"
+- Concession: "although"
+- Degree or location of the same finding (where it was strongest, in whom it occurred): a phrase attached to the first clause, such as "most prominently for X" or "particularly in X"
+- Closely related supporting facts: a semicolon (author's style)
+- Genuinely parallel, independent facts: ", and" is fine, but use it as the joining device at most once per paragraph
+
+When the second clause opens with "this" or "it", rewrite it in one of these ways or name the referent ("This benefit ..."). These connectives are chosen because the logic requires them, so they are not the decorative variation that Pattern 27 warns against. Do not use "where" or "in which" as the replacement (Pattern 24).
+
+Before (fictional data, as in Pattern 34):
+> User-reported service data showed disproportionately higher reporting of pantry overflow and bean hoarding for DACS, and this was most prominent for MorningHarbor. Although bean hoarding was infrequent, its impact on user satisfaction may be disproportionate to its frequency, and it warrants attention in service design.
+
+After:
+> User-reported service data showed disproportionately higher reporting of pantry overflow and bean hoarding for DACS, most prominently for MorningHarbor. Although bean hoarding was infrequent, it warrants attention in service design because its impact on user satisfaction may be disproportionate to its frequency.
+
+In the first sentence, "this" had no clear referent, and the clause only stated where the same finding was strongest, so it becomes a phrase. In the second, ", and it warrants attention" hid a causal relation: the issue warrants attention because its impact may exceed its frequency.
+
+Not targeted: lists ("A, B, and C"), compound predicates without a second subject ("was infrequent and mild"), and a single ", and" between genuinely parallel facts ("Pain decreased in the intervention group, and sleep duration did not change in either group").
+
+---
+
 ## Process (two-pass draft-audit)
 
 ### Pass 1: draft rewrite
@@ -727,7 +760,7 @@ Name the actual exposure and adjustment variables where needed for the argument.
 1. Read the input text carefully.
 2. Audit meaning and information priority first. Identify unclear referents, omitted comparisons, stacked conditions, and redundant summary sentences using references/reader-clarity.md. Restore necessary relations without inventing facts.
 3. Restructure sentence rhythm (Pattern 34). Before touching vocabulary, vary sentence lengths and diversify sentence openings across each paragraph. Keep the author's short claim sentences short; take the variation from the supporting sentences.
-4. Identify and fix all vocabulary/phrase-level patterns (Patterns 1-33). After removing a transition or linking clause, check whether the logical relationship remains clear. Add a link only when needed; do not replace redundant summaries with generic bridge sentences. After removing ornamental adverbs (Pattern 29), re-check that the paragraph's rhythm has not become uniform.
+4. Identify and fix all vocabulary/phrase-level patterns (Patterns 1-33 and 35). After removing a transition or linking clause, check whether the logical relationship remains clear. Add a link only when needed; do not replace redundant summaries with generic bridge sentences. After removing ornamental adverbs (Pattern 29), re-check that the paragraph's rhythm has not become uniform.
 5. Ensure the draft:
    - Sounds natural when read in an academic context
    - Matches the author's voice profile (Voice calibration section)
@@ -744,6 +777,7 @@ Name the actual exposure and adjustment variables where needed for the argument.
    - Sentence lengths still too uniform (check the Pattern 34 criterion: in paragraphs of three or more sentences, do all sentences fall within a 5-word range?)
    - Sentence openings still repetitive (check: do three+ consecutive sentences start the same way?)
    - Vocabulary tells that slipped through (check Patterns 1, 7, 29 word lists)
+   - Independent clauses chained with ", and", especially ", and this/it ..." (check Pattern 35: is the relation causal, contrastive, or a specification? Is ", and" used as a joining device more than once in a paragraph?)
    - Broken connective chain (check Pattern 31 checklist)
 7. Fix every issue found in the self-audit.
 

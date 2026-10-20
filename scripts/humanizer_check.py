@@ -64,6 +64,7 @@ CANDIDATES = [
     (r"\bIn order to\b", "Pattern 16"),
     (r"\bDue to the fact that\b", "Pattern 16"),
     (r"\bIt is important to note that\b", "Pattern 16"),
+    (r",\s+and (?:this|it|these)\b", "Pattern 35"),
 ]
 
 NUMBER = re.compile(r"(?<![A-Za-z])\d+(?:[.,]\d+)*")
