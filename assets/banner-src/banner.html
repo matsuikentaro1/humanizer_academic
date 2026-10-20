@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1b2f4a;
+    --navy-2: #2c4a72;
+    --gold: #e3a92b;
+    --mask: #d6e4f2;
+    --paper: #fbf8f1;
+    --red: #c8473c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 400px; background: transparent; }
+  .banner {
+    position: relative; width: 1280px; height: 400px; overflow: hidden;
+    background: var(--paper);
+    border-radius: 28px;
+  }
+  /* manuscript ruling */
+  .rules {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 39px, rgba(44,74,114,0.08) 39px 40px);
+  }
+  .margin { position: absolute; top: 0; bottom: 0; left: 64px; width: 2px; background: rgba(200,71,60,0.22); }
+  /* struck-through AI vocabulary */
+  .words { position: absolute; inset: 0; font-family: 'JetBrains Mono', monospace; font-size: 17px; color: rgba(27,47,74,0.34);
+    -webkit-mask-image: linear-gradient(to right, transparent 400px, #000 520px, #000 1150px, transparent 1270px); }
+  .words span { position: absolute; white-space: nowrap; }
+  .words span::after {
+    content: ''; position: absolute; left: -3px; right: -3px; top: 52%;
+    height: 2.5px; background: rgba(200,71,60,0.55); border-radius: 2px; transform: rotate(-2deg);
+  }
+  .icon-wrap {
+    position: absolute; left: 96px; top: 52px; width: 296px; height: 296px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #ffffff 0 45%, #e3edf7 100%);
+    box-shadow: 0 10px 30px rgba(27,47,74,0.16), inset 0 0 0 5px var(--navy);
+  }
+  .icon-wrap img { position: absolute; left: -14px; top: -30px; width: 330px; height: 330px; filter: drop-shadow(0 6px 10px rgba(27,47,74,0.18)); }
+  .text { position: absolute; left: 456px; top: 104px; right: 48px; }
+  .wordmark {
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 66px; letter-spacing: -1px;
+    color: var(--navy); line-height: 1;
+  }
+  .wordmark .us { color: var(--gold); }
+  .tag {
+    margin-top: 18px; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 25px;
+    color: var(--navy-2); line-height: 1.35;
+  }
+  .meta { margin-top: 26px; display: flex; gap: 12px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 17px; }
+  .pill { padding: 7px 16px; border-radius: 999px; background: var(--navy); color: #fff; }
+  .pill.gold { background: var(--gold); color: var(--navy); }
+  .pill.ghost { background: transparent; color: var(--navy); box-shadow: inset 0 0 0 2px var(--navy); }
+  /* fade words behind text block */
+  .veil {
+    position: absolute; left: 450px; top: 70px; width: 790px; height: 260px;
+    background: radial-gradient(ellipse at 45% 50%, var(--paper) 55%, rgba(251,248,241,0) 75%);
+  }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="rules"></div>
+  <div class="margin"></div>
+  <div class="words" id="words"></div>
+  
+  <div class="icon-wrap"><img src="../icon.png" alt=""></div>
+  <div class="text">
+    <div class="wordmark">humanizer<span class="us">_</span>academic</div>
+    <div class="tag">Remove signs of AI writing from medical manuscripts</div>
+    <div class="meta">
+      <span class="pill">Works with any LLM</span>
+      <span class="pill gold">35 patterns</span>
+      <span class="pill ghost">v2.6.0</span>
+    </div>
+  </div>
+</div>
+<script>
+  const vocab = ['delve', 'pivotal', 'underscores', 'tapestry', 'evolving landscape', 'showcases',
+    'multifaceted', 'intricate interplay', 'serves as', 'highlighting', ', and this', 'groundbreaking',
+    'fostering', 'a testament to', 'markedly', 'via', 'holistic', 'crucial', 'garnered', 'In other words,',
+    'vibrant', 'yielded', 'linked to', 'Beyond', 'remarkably'];
+  const box = document.getElementById('words');
+  const rows = [30, 70, 330, 370];
+  let k = 0;
+  rows.forEach((y, r) => {
+    let x = 440 + (r % 2 ? 44 : 0);
+    while (x < 1260) {
+      const s = document.createElement('span');
+      s.textContent = vocab[k++ % vocab.length];
+      s.style.left = x + 'px'; s.style.top = (y - 13) + 'px';
+      box.appendChild(s);
+      x += s.getBoundingClientRect().width + 46 + (k * 37 % 40);
+    }
+  });
+</script>
+</body>
+</html>

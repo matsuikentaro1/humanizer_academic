@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./assets/banner.png" alt="humanizer_academic: Remove signs of AI writing from medical manuscripts" width="820">
+</p>
+
 # Humanizer Academic
 
 A skill that removes signs of AI-generated writing from academic medical papers, making them sound more natural and professionally written.
