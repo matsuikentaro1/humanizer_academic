@@ -197,6 +197,15 @@ This is a paper I wrote. Using PubMed records, I measured how frequently LLMs su
 
 *The image above is Figure 1 from the paper cited above, reproduced under the [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) license.*
 
+## Releasing a New Version
+
+When you change the version, update all of the following in the same commit:
+
+1. `version:` in the front matter of `SKILL.md`.
+2. An entry at the top of the Version History below. If you added or retired a pattern, also update the pattern tables and the "35 Patterns" heading in this README.
+3. The banner. Edit the version pill (and the pattern-count pill if the count changed) in `assets/banner-src/banner.html`, then run `python assets/banner-src/render.py` (requires Playwright with Chromium) to regenerate `assets/banner.png`. Open the PNG and check it before committing; the banner is not generated automatically and otherwise keeps showing the old version.
+4. Your installed copy (`~/.claude/skills/humanizer_academic/`), using the copy commands under [In Claude Code](#in-claude-code).
+
 ## Version History
 
 - **2.7.0** - Extended Pattern 35 to three constructions that v2.6 left untargeted: one subject carrying three or more predicates, or two predicates separated by statistics, including gapped clauses such as ", and greater in A than in B" (split where the subject or comparison changes and restate the subject); lists nested inside lists (separate the outer items with semicolons); and "between X and A and B" (name the second side as one unit). These constructions are common in Results sentences and come from authors' drafts as well as from model edits. After shortening text to meet a word limit, the skill now rereads each shortened sentence for these constructions and for pronouns introduced to save words (Shortening order step 5 in reader-clarity.md). The checker now lists sentences in which ", and" is followed by a verb, long sentences with three or more "and", gapped clauses, and "between X and A and B", as candidates to read. On a 33-paragraph manuscript it listed 18 paragraphs before revision and 3 after; the skill still reads every paragraph, because the checker does not catch every chain.
