@@ -69,6 +69,7 @@ If an abstract says that accuracy, cost, and processing time were evaluated but 
 2. Remove repetitive summaries, empty previews, and lower-priority sentences or topics. Check the role of any attached citations.
 3. Remove redundant phrases without omitting actors, comparators, conditions, or outcomes.
 4. Recount words and check that methods, results, and conclusions still correspond. If the limit cannot be met within the authorized scope without losing meaning, present the tradeoff to the author rather than silently exceeding it.
+5. Reread each shortened sentence. Cutting words tends to introduce pronouns ("remained associated with it"), stacked predicates, and clauses chained with ", and" (Pattern 35 in SKILL.md). Restore the noun or split the sentence, and recover the words by dropping a lower-priority sentence.
 
 Do not automatically prioritize limitations and future-work sentences over the main findings in an abstract. They can be removed when lower priority, not required by the journal, and unnecessary to prevent a misleading claim. Preserve qualifications that materially change interpretation.
 

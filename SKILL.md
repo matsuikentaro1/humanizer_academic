@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 2.6.0
+version: 2.7.0
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -727,7 +727,7 @@ Name the actual exposure and adjustment variables where needed for the argument.
 
 ### 35. Independent clauses chained with ", and" (especially ", and this/it ...")
 
-Words to watch: ", and this ...", ", and it ...", ", and these ...", two or more ", and" clause joins in the same paragraph
+Words to watch: ", and this ...", ", and it ...", ", and these ...", two or more ", and" clause joins in the same paragraph, gapped clauses (", and greater in A than in B"), lists nested inside lists, "between X and A and B"
 
 Problem: LLMs join independent clauses with ", and" by default, whatever the relation between them. A cause, a contrast, or a specification then reads as a plain list, and the reader has to reconstruct the logic. When the second clause opens with "this" or "it", the referent is often unclear as well (see example 2 in [reader clarity](references/reader-clarity.md)). The construction appears most often where other edits leave a gap: after an -ing tail is deleted (Pattern 3), when a link is restored (Pattern 30), or when sentences are merged for rhythm (Pattern 34).
 
@@ -749,7 +749,29 @@ After:
 
 In the first sentence, "this" had no clear referent, and the clause only stated where the same finding was strongest, so it becomes a phrase. In the second, ", and it warrants attention" hid a causal relation: the issue warrants attention because its impact may exceed its frequency.
 
-Not targeted: lists ("A, B, and C"), compound predicates without a second subject ("was infrequent and mild"), and a single ", and" between genuinely parallel facts ("Pain decreased in the intervention group, and sleep duration did not change in either group").
+Not targeted: simple lists ("A, B, and C"), a compound predicate of two short verbs without a second subject ("was infrequent and mild"), and a single ", and" between genuinely parallel facts ("Pain decreased in the intervention group, and sleep duration did not change in either group").
+
+Three related constructions are targeted even though they have no second subject. They are most common in Results sentences that report many comparisons, and they also come from the author's draft, not only from your edits.
+
+1. Stacked predicates on one subject. A subject that carries three or more predicates, or two predicates separated by statistics or parentheses, makes the reader hold the subject across the whole sentence. A gapped clause (", and greater in A than in B", ", and later in C"), which drops both subject and verb, is worse. Split the sentence where the subject or the comparison changes, and restate the subject in the new sentence.
+
+   Before (fictional data):
+   > Serum ferritin differed among the clinics (χ² = 12.4, p = 0.006) and was lower in clinics A (p = 0.010) and B (p = 0.021) than in clinic D, and lower in clinic B than in clinic C (p = 0.034), whereas clinic C did not differ from clinic D (p = 0.410) and had higher ferritin than clinic A (p = 0.018).
+
+   After:
+   > Serum ferritin differed among the clinics (χ² = 12.4, p = 0.006) and was lower in clinics A (p = 0.010) and B (p = 0.021) than in clinic D. Ferritin was also lower in clinic B than in clinic C (p = 0.034). Clinic C did not differ from clinic D (p = 0.410) and had higher ferritin than clinic A (p = 0.018).
+
+2. Nested lists. When the items of a list contain their own "and" or their own comma list, the reader cannot see where one item ends. Separate the outer items with semicolons.
+
+   Before (fictional):
+   > Earlier studies linked poorer school performance to early waking in children [1], delayed or irregular bedtimes in adolescents [2], young adults [3], and older adults [4], and short naps in shift workers [5].
+
+   After:
+   > Earlier studies reported associations between poorer school performance and several sleep features: early waking in children [1]; delayed or irregular bedtimes in adolescents [2], young adults [3], and older adults [4]; and short naps in shift workers [5].
+
+3. "between X and Y" when Y contains "and". "Correlations between each covariate and A and B" does not show which "and" closes the pair. Name the second side as one unit: "correlations between each covariate and each of the two outcomes (A and B)".
+
+When you shorten text to meet a word limit, reread every sentence you shortened for these constructions and for pronouns introduced to save words ("remained associated with it"). Restore the noun even if it costs words; drop a lower-priority sentence instead (see Shortening order in [reader clarity](references/reader-clarity.md)).
 
 ---
 
@@ -777,13 +799,13 @@ Not targeted: lists ("A, B, and C"), compound predicates without a second subjec
    - Sentence lengths still too uniform (check the Pattern 34 criterion: in paragraphs of three or more sentences, do all sentences fall within a 5-word range?)
    - Sentence openings still repetitive (check: do three+ consecutive sentences start the same way?)
    - Vocabulary tells that slipped through (check Patterns 1, 7, 29 word lists)
-   - Independent clauses chained with ", and", especially ", and this/it ..." (check Pattern 35: is the relation causal, contrastive, or a specification? Is ", and" used as a joining device more than once in a paragraph?)
+   - Independent clauses chained with ", and", especially ", and this/it ..." (check Pattern 35: is the relation causal, contrastive, or a specification? Is ", and" used as a joining device more than once in a paragraph? Does one subject carry three or more predicates, or a gapped clause? Is a list nested inside a list without semicolons? Read every paragraph for these yourself; the checker lists only some of them.)
    - Broken connective chain (check Pattern 31 checklist)
 7. Fix every issue found in the self-audit.
 
 ### Mandatory final checks
 
-When you can run commands, start these checks by running the bundled checker once on the draft. It counts what is easy to miscount: the words in each sentence of every paragraph, em dashes, curly quotes, repeated sentence openers, and numbers that appear in the revision but not in the original.
+When you can run commands, start these checks by running the bundled checker once on the draft. It counts what is easy to miscount: the words in each sentence of every paragraph, em dashes, curly quotes, repeated sentence openers, sentences that may chain clauses with ", and", and numbers that appear in the revision but not in the original.
 
 ```bash
 python "${CLAUDE_SKILL_DIR}/scripts/humanizer_check.py" <<'HUMANIZER_EOF'
@@ -800,6 +822,7 @@ Use the report as follows:
 - Take its counts as the result of the em dash check and of the 5-word criterion in the rhythm check, then fix what it reports.
 - Check each added number against the input. A number that the input spelled out as a word is fine.
 - Read each candidate word in context. The list names candidates, and a legitimate use stays (see Preserve legitimate academic phrases).
+- Read each sentence in the ", and" list (Pattern 35). Commas before the last item of a simple list are counted too, so many entries are fine. A paragraph that the checker does not list can still chain clauses; the checker does not replace reading.
 - Run it at most twice: once on the draft and once after your fixes. Do not keep rewriting to clear the candidate list.
 - Do not paste the report into your answer. Fold what you fixed into the summary of changes.
 

@@ -3,8 +3,8 @@
 humanizer_check.py - mechanical checks for the humanizer_academic skill.
 
 Counts what a language model counts badly: words per sentence, em dashes,
-curly quotes, repeated openers, and numbers that appear in the revision but
-not in the original. Standard library only. Always exits 0.
+curly quotes, repeated openers, ", and" chains, and numbers that appear in the
+revision but not in the original. Standard library only. Always exits 0.
 
 Usage:
     python humanizer_check.py revised.txt
@@ -68,6 +68,17 @@ CANDIDATES = [
 ]
 
 NUMBER = re.compile(r"(?<![A-Za-z])\d+(?:[.,]\d+)*")
+
+# Pattern 35: ", and greater in A than in B" (subject and verb dropped).
+GAPPED = re.compile(
+    r",\s+and (?:greater|lower|higher|later|earlier|longer|shorter|less|more|smaller|larger)\b[^.;]*?\bthan\b"
+)
+# Pattern 35: "between X and A and B".
+BETWEEN = re.compile(r"\bbetween\b(?:\s+(?!between\b)[^\s.;:]+){1,6}?\s+and\b(?:\s+[^\s.;:]+){1,3}?\s+and\b")
+# Pattern 35: ", and" that joins a clause or a predicate rather than closing a list:
+# a verb follows within a few words.
+VERB = r"(?:is|are|was|were|did|does|do|had|has|have|may|might|can|could|would|should|will|remained|became|showed|reported|reached)"
+CLAUSE_AND = re.compile(r",\s+and(?:\s+[^\s,.;:]+){0,4}?\s+" + VERB + r"\b")
 
 
 def read_text(path):
@@ -209,7 +220,33 @@ def check(revised, original=None):
         if dropped:
             out.append("  " + ", ".join(dropped))
 
-    # 5. Candidate words.
+    # 5. Clauses chained with ", and" (Pattern 35): sentences to read, not violations.
+    out.append("")
+    and_lines = []
+    for index, sents in enumerate(para_sentences, 1):
+        joins = sum(len(CLAUSE_AND.findall(s)) for s in sents)
+        flagged = []
+        for s in sents:
+            reasons = []
+            n_join = len(CLAUSE_AND.findall(s))
+            if n_join:
+                reasons.append(f"\", and\" + verb x {n_join}")
+            n_and = len(re.findall(r"\band\b", s))
+            if word_count(s) > 40 and n_and >= 3:
+                reasons.append(f"{word_count(s)} words, {n_and} x \"and\"")
+            if GAPPED.search(s):
+                reasons.append("gapped clause")
+            if BETWEEN.search(s):
+                reasons.append("\"between X and A and B\"")
+            if n_join or (reasons and len(reasons) > 1) or GAPPED.search(s) or BETWEEN.search(s):
+                flagged.append(f"      {'; '.join(reasons)}: {snippet(s, 60)}")
+        if joins >= 2 or flagged:
+            and_lines.append(f"  - P{index}: \", and\" joining a clause or predicate: {joins}")
+            and_lines.extend(flagged)
+    out.append(f"Paragraphs with \", and\" chains to read (not violations): {sum(1 for l in and_lines if l.startswith('  - '))}")
+    out.extend(and_lines)
+
+    # 6. Candidate words.
     out.append("")
     found = []
     for pattern, label in CANDIDATES:
@@ -221,7 +258,7 @@ def check(revised, original=None):
     out.append("")
     out.append("Fix em dashes, curly quotes, and uniform paragraphs.")
     out.append("Check each added number against the original; a number that the original spelled out is fine.")
-    out.append("Judge the candidates in context. One revision round is enough.")
+    out.append("Judge the candidates and the \", and\" sentences in context. One revision round is enough.")
     return "\n".join(out)
 
 
