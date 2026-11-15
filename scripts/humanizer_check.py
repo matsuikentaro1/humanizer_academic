@@ -3,7 +3,8 @@
 humanizer_check.py - mechanical checks for the humanizer_academic skill.
 
 Counts what a language model counts badly: words per sentence, em dashes,
-curly quotes, repeated openers, ", and" chains, and numbers that appear in the
+curly quotes, repeated openers, ", and" chains (including predicates that
+resume after a citation block), and numbers that appear in the
 revision but not in the original. Standard library only. Always exits 0.
 
 Usage:
@@ -72,6 +73,12 @@ NUMBER = re.compile(r"(?<![A-Za-z])\d+(?:[.,]\d+)*")
 # Pattern 35: ", and greater in A than in B" (subject and verb dropped).
 GAPPED = re.compile(
     r",\s+and (?:greater|lower|higher|later|earlier|longer|shorter|less|more|smaller|larger)\b[^.;]*?\bthan\b"
+)
+# Pattern 35: a second predicate that resumes after a citation or statistics block,
+# e.g. "... (Smith et al., 2020; Lee, 2021), and with lower income" or "... [3, 4], and to ...".
+SPLIT_BY_CITATION = re.compile(
+    r"(?:\([^()]*\d[^()]*\)|\[[^\[\]]*\d[^\[\]]*\])\s*,\s+and\s+"
+    r"(?:with|to|in|by|for|among|from|on|at|as|than|through|including|across|between)\b"
 )
 # Pattern 35: "between X and A and B".
 BETWEEN = re.compile(r"\bbetween\b(?:\s+(?!between\b)[^\s.;:]+){1,6}?\s+and\b(?:\s+[^\s.;:]+){1,3}?\s+and\b")
@@ -238,7 +245,10 @@ def check(revised, original=None):
                 reasons.append("gapped clause")
             if BETWEEN.search(s):
                 reasons.append("\"between X and A and B\"")
-            if n_join or (reasons and len(reasons) > 1) or GAPPED.search(s) or BETWEEN.search(s):
+            split = SPLIT_BY_CITATION.search(s)
+            if split:
+                reasons.append("predicate resumes after citations or statistics")
+            if n_join or (reasons and len(reasons) > 1) or GAPPED.search(s) or BETWEEN.search(s) or split:
                 flagged.append(f"      {'; '.join(reasons)}: {snippet(s, 60)}")
         if joins >= 2 or flagged:
             and_lines.append(f"  - P{index}: \", and\" joining a clause or predicate: {joins}")

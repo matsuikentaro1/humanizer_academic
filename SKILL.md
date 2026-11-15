@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 2.7.0
+version: 2.7.1
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -751,9 +751,19 @@ In the first sentence, "this" had no clear referent, and the clause only stated 
 
 Not targeted: simple lists ("A, B, and C"), a compound predicate of two short verbs without a second subject ("was infrequent and mild"), and a single ", and" between genuinely parallel facts ("Pain decreased in the intervention group, and sleep duration did not change in either group").
 
-Three related constructions are targeted even though they have no second subject. They are most common in Results sentences that report many comparisons, and they also come from the author's draft, not only from your edits.
+Three related constructions are targeted even though they have no second subject. They are most common in Results sentences that report many comparisons and in Introduction or Discussion sentences that cite many studies, and they also come from the author's draft, not only from your edits.
 
-1. Stacked predicates on one subject. A subject that carries three or more predicates, or two predicates separated by statistics or parentheses, makes the reader hold the subject across the whole sentence. A gapped clause (", and greater in A than in B", ", and later in C"), which drops both subject and verb, is worse. Split the sentence where the subject or the comparison changes, and restate the subject in the new sentence.
+1. Stacked predicates on one subject. A subject that carries three or more predicates, or two predicates separated by statistics, parentheses, or a block of citations, makes the reader hold the subject across the whole sentence. A gapped clause (", and greater in A than in B", ", and later in C"), which drops both subject and verb, is worse. Split the sentence where the subject or the comparison changes, and restate the subject in the new sentence.
+
+   In Introduction and Discussion the separator is usually a citation block: "X has been associated with A (refs), and with B (refs)". After four or five references, the reader no longer knows what ", and with" attaches to. When the sentence then continues past a semicolon to another subject, the reader has to hold three things at once. This is often the first sentence of the paper, where it does the most damage.
+
+   Before (fictional):
+   > Shift work has been associated with poorer glycemic control, including among workers who had never received a diagnosis of diabetes [1, 2, 3, 4], and with weight gain [5, 6]; night work has likewise been associated with weight gain [7].
+
+   After:
+   > Shift work has been associated with poorer glycemic control, even in workers who had never received a diagnosis of diabetes [1, 2, 3, 4]. Shift work has also been associated with weight gain [5, 6], as has night work [7].
+
+   In Results the separator is usually statistics.
 
    Before (fictional data):
    > Serum ferritin differed among the clinics (χ² = 12.4, p = 0.006) and was lower in clinics A (p = 0.010) and B (p = 0.021) than in clinic D, and lower in clinic B than in clinic C (p = 0.034), whereas clinic C did not differ from clinic D (p = 0.410) and had higher ferritin than clinic A (p = 0.018).
@@ -799,7 +809,7 @@ When you shorten text to meet a word limit, reread every sentence you shortened 
    - Sentence lengths still too uniform (check the Pattern 34 criterion: in paragraphs of three or more sentences, do all sentences fall within a 5-word range?)
    - Sentence openings still repetitive (check: do three+ consecutive sentences start the same way?)
    - Vocabulary tells that slipped through (check Patterns 1, 7, 29 word lists)
-   - Independent clauses chained with ", and", especially ", and this/it ..." (check Pattern 35: is the relation causal, contrastive, or a specification? Is ", and" used as a joining device more than once in a paragraph? Does one subject carry three or more predicates, or a gapped clause? Is a list nested inside a list without semicolons? Read every paragraph for these yourself; the checker lists only some of them.)
+   - Independent clauses chained with ", and", especially ", and this/it ..." (check Pattern 35: is the relation causal, contrastive, or a specification? Is ", and" used as a joining device more than once in a paragraph? Does one subject carry three or more predicates, two predicates split by a citation block (", and with ..." after the references), or a gapped clause? Is a list nested inside a list without semicolons? Read every paragraph for these yourself; the checker lists only some of them.)
    - Broken connective chain (check Pattern 31 checklist)
 7. Fix every issue found in the self-audit.
 
@@ -822,7 +832,7 @@ Use the report as follows:
 - Take its counts as the result of the em dash check and of the 5-word criterion in the rhythm check, then fix what it reports.
 - Check each added number against the input. A number that the input spelled out as a word is fine.
 - Read each candidate word in context. The list names candidates, and a legitimate use stays (see Preserve legitimate academic phrases).
-- Read each sentence in the ", and" list (Pattern 35). Commas before the last item of a simple list are counted too, so many entries are fine. A paragraph that the checker does not list can still chain clauses; the checker does not replace reading.
+- Read each sentence in the ", and" list (Pattern 35). Commas before the last item of a simple list are counted too, so many entries are fine. A paragraph that the checker does not list can still chain clauses; the checker does not replace reading. A clean report is not the end of the Pattern 35 read: read the first sentence of each paragraph and every sentence over 40 words yourself, because those are where stacked predicates hide.
 - Run it at most twice: once on the draft and once after your fixes. Do not keep rewriting to clear the candidate list.
 - Do not paste the report into your answer. Fold what you fixed into the summary of changes.
 
