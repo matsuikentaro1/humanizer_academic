@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 2.8.0
+version: 2.8.1
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -801,9 +801,9 @@ Before (fictional):
 > In the primary model, the indirect estimate through sleep quality excluded the null (0.08; 95% CI, 0.05 to 0.11), whereas the estimate through sleep duration did not exclude the null. The exposure-mediator interaction excluded the null in group A, whereas it did not exclude the null in group B. Across all four sensitivity models, the indirect estimate through sleep quality excluded the null.
 
 After:
-> In the primary model, sleep quality mediated part of the association (indirect estimate, 0.08; 95% CI, 0.05 to 0.11), whereas sleep duration did not. The exposure-mediator interaction was present in group A but not in group B. Across all four sensitivity models, the indirect estimate through sleep quality remained above zero.
+> In the primary model, the indirect estimate through sleep quality excluded the null (0.08; 95% CI, 0.05 to 0.11), whereas the confidence interval for sleep duration included zero. The exposure-mediator interaction was statistically significant in group A, whereas the estimate in group B was compatible with the null. Across all four sensitivity models, the confidence interval for sleep quality remained above zero.
 
-Rule: When a non-term replacement phrase appears four or more times across a manuscript, keep one or two natural uses and vary the rest with plain, direct wording (such as "was associated with", "mediated", "remained above zero", or "did not differ from zero"). Do not replace one pet phrase with another stylized idiom; prefer plain academic phrasing.
+Rule: When a non-term replacement phrase appears four or more times across a manuscript, keep one or two natural uses and vary the rest with plain, direct wording (such as "was associated with", "was statistically significant", "the confidence interval included zero", "was compatible with the null", or "remained above zero"). Preserve the statistical meaning when varying phrasing: never turn "did not exclude the null" into a claim of absence ("did not mediate", "was not present") or imply a between-group difference without a direct comparison. Do not replace one pet phrase with another stylized idiom; prefer plain academic phrasing.
 
 ---
 
