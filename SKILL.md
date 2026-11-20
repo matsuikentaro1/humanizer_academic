@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 2.7.1
+version: 2.8.0
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -669,11 +669,11 @@ Exception: Genuine clarification of a technical term is not paraphrastic repetit
 
 ---
 
-### 33. Content-free evaluation sentences
+### 33. Content-free evaluation and empty preview sentences
 
-Problem: LLMs insert standalone sentences that evaluate a finding's importance without adding any information: no data, no mechanism, no comparison, just a verdict of significance. These are distinct from Pattern 1 (significance inflation embedded within data-bearing sentences) and Pattern 3 (-ing tails appended to factual sentences); Pattern 33 targets freestanding evaluation sentences that contain nothing but the evaluation itself.
+Problem: LLMs insert standalone sentences that add no data, mechanism, comparison, or claim. They appear in two forms: (a) verdict sentences that merely label a finding as important, and (b) empty preview or throat-clearing sentences that announce a topic or transition before the next sentence actually states it (see Example 6 in [reader clarity](references/reader-clarity.md)). These are distinct from Pattern 1 (significance inflation embedded within data-bearing sentences) and Pattern 3 (-ing tails appended to factual sentences); Pattern 33 targets freestanding sentences that carry no substantive content of their own.
 
-Words to watch: This is an important/significant/noteworthy finding. These results are of clinical/public health significance. This observation is clinically relevant. This finding has important implications. This is a meaningful/notable result. This deserves attention.
+Words to watch: This is an important/significant/noteworthy finding. These results are of clinical/public health significance. This observation is clinically relevant. This finding has important implications. This is a meaningful/notable result. This deserves attention. Interpreting X requires careful consideration of Y. These findings bear on how X is assessed. While X may affect Y, the precise mechanisms remain poorly understood.
 
 Before:
 > Empagliflozin reduced cardiovascular death by 38%. This is a noteworthy finding. The benefit was consistent across subgroups. This observation is of clinical significance.
@@ -681,9 +681,15 @@ Before:
 After:
 > Empagliflozin reduced cardiovascular death by 38%. The benefit was consistent across subgroups.
 
-Principle: If the finding is genuinely significant, show why: state the mechanism, the clinical consequence, or the contrast with prior evidence. A sentence that merely labels a finding as "important" without explaining what makes it important adds no information and should be deleted. When deleting, apply Pattern 30 (connective-preserving edits) to maintain flow.
+Before (empty preview, fictional):
+> Moreover, interpreting sleep as a potential mediator requires careful consideration of depression. Depression commonly co-occurs with both conditions and affects sleep and daytime functioning.
 
-Exception: An evaluation sentence is acceptable when it immediately follows up with a specific reason: "This finding is clinically relevant because it identifies patients who may benefit from earlier intervention." Here, the evaluation carries forward into a concrete implication. The standalone, terminal evaluation ("This is important." Full stop.) is the problem.
+After:
+> Depression commonly co-occurs with both conditions and affects sleep and daytime functioning.
+
+Principle: If a finding is genuinely significant, show why: state the mechanism, the clinical consequence, or the contrast with prior evidence. If a sentence only announces that a topic requires consideration or bears on practice, delete it and let the next sentence state the point directly. When deleting, apply Pattern 30 (connective-preserving edits) if the logical link to the preceding sentence would otherwise break.
+
+Exception: An evaluation or topic sentence is acceptable when it states a concrete claim or reason in the same sentence ("This finding is clinically relevant because it identifies patients who may benefit from earlier intervention") or serves as an established section signpost ("Some limitations should be noted."). The standalone verdict ("This is important.") and the empty preview that adds nothing to the sentence that follows are the targets.
 
 ---
 
@@ -785,6 +791,22 @@ When you shorten text to meet a word limit, reread every sentence you shortened 
 
 ---
 
+### 36. Over-repeated non-term phrases
+
+Problem: When avoiding AI vocabulary or standard phrases (such as "statistically significant" or "mediated"), models often lock onto a single replacement phrase (such as "excluded the null" or "carried the association") and repeat it across multiple paragraphs. The first use reads naturally; the fifth or eighth use reads like a mechanical rule applied by an algorithm.
+
+Division of labor with Pattern 11: Pattern 11 requires repeating the exact same term for a study construct, exposure, outcome, or statistical quantity throughout the paper. Pattern 36 applies only to non-term phrasing: idioms, replacement predicates, and framing expressions that are not technical names. Never replace a consistent study term with a synonym to satisfy Pattern 36.
+
+Before (fictional):
+> In the primary model, the indirect estimate through sleep quality excluded the null (0.08; 95% CI, 0.05 to 0.11), whereas the estimate through sleep duration did not exclude the null. The exposure-mediator interaction excluded the null in group A, whereas it did not exclude the null in group B. Across all four sensitivity models, the indirect estimate through sleep quality excluded the null.
+
+After:
+> In the primary model, sleep quality mediated part of the association (indirect estimate, 0.08; 95% CI, 0.05 to 0.11), whereas sleep duration did not. The exposure-mediator interaction was present in group A but not in group B. Across all four sensitivity models, the indirect estimate through sleep quality remained above zero.
+
+Rule: When a non-term replacement phrase appears four or more times across a manuscript, keep one or two natural uses and vary the rest with plain, direct wording (such as "was associated with", "mediated", "remained above zero", or "did not differ from zero"). Do not replace one pet phrase with another stylized idiom; prefer plain academic phrasing.
+
+---
+
 ## Process (two-pass draft-audit)
 
 ### Pass 1: draft rewrite
@@ -792,7 +814,7 @@ When you shorten text to meet a word limit, reread every sentence you shortened 
 1. Read the input text carefully.
 2. Audit meaning and information priority first. Identify unclear referents, omitted comparisons, stacked conditions, and redundant summary sentences using references/reader-clarity.md. Restore necessary relations without inventing facts.
 3. Restructure sentence rhythm (Pattern 34). Before touching vocabulary, vary sentence lengths and diversify sentence openings across each paragraph. Keep the author's short claim sentences short; take the variation from the supporting sentences.
-4. Identify and fix all vocabulary/phrase-level patterns (Patterns 1-33 and 35). After removing a transition or linking clause, check whether the logical relationship remains clear. Add a link only when needed; do not replace redundant summaries with generic bridge sentences. After removing ornamental adverbs (Pattern 29), re-check that the paragraph's rhythm has not become uniform.
+4. Identify and fix all vocabulary/phrase-level patterns (Patterns 1-33, 35, and 36). After removing a transition or linking clause, check whether the logical relationship remains clear. Add a link only when needed; do not replace redundant summaries with generic bridge sentences. After removing ornamental adverbs (Pattern 29), re-check that the paragraph's rhythm has not become uniform.
 5. Ensure the draft:
    - Sounds natural when read in an academic context
    - Matches the author's voice profile (Voice calibration section)
@@ -809,13 +831,14 @@ When you shorten text to meet a word limit, reread every sentence you shortened 
    - Sentence lengths still too uniform (check the Pattern 34 criterion: in paragraphs of three or more sentences, do all sentences fall within a 5-word range?)
    - Sentence openings still repetitive (check: do three+ consecutive sentences start the same way?)
    - Vocabulary tells that slipped through (check Patterns 1, 7, 29 word lists)
+   - Over-repeated non-term phrases introduced during editing (check Pattern 36: has a single replacement phrase such as "excluded the null" or "carried the association" been repeated mechanically across paragraphs, while leaving study terms consistent per Pattern 11?)
    - Independent clauses chained with ", and", especially ", and this/it ..." (check Pattern 35: is the relation causal, contrastive, or a specification? Is ", and" used as a joining device more than once in a paragraph? Does one subject carry three or more predicates, two predicates split by a citation block (", and with ..." after the references), or a gapped clause? Is a list nested inside a list without semicolons? Read every paragraph for these yourself; the checker lists only some of them.)
    - Broken connective chain (check Pattern 31 checklist)
 7. Fix every issue found in the self-audit.
 
 ### Mandatory final checks
 
-When you can run commands, start these checks by running the bundled checker once on the draft. It counts what is easy to miscount: the words in each sentence of every paragraph, em dashes, curly quotes, repeated sentence openers, sentences that may chain clauses with ", and", and numbers that appear in the revision but not in the original.
+When you can run commands, start these checks by running the bundled checker once on the draft. It counts what is easy to miscount: the words in each sentence of every paragraph, em dashes, curly quotes, repeated sentence openers, sentences that may chain clauses with ", and", repeated phrases across paragraphs, and numbers that appear in the revision but not in the original.
 
 ```bash
 python "${CLAUDE_SKILL_DIR}/scripts/humanizer_check.py" <<'HUMANIZER_EOF'
@@ -833,6 +856,7 @@ Use the report as follows:
 - Check each added number against the input. A number that the input spelled out as a word is fine.
 - Read each candidate word in context. The list names candidates, and a legitimate use stays (see Preserve legitimate academic phrases).
 - Read each sentence in the ", and" list (Pattern 35). Commas before the last item of a simple list are counted too, so many entries are fine. A paragraph that the checker does not list can still chain clauses; the checker does not replace reading. A clean report is not the end of the Pattern 35 read: read the first sentence of each paragraph and every sentence over 40 words yourself, because those are where stacked predicates hide.
+- Scan the repeated-phrases list (Pattern 36). Ignore study constructs, variable names, and standard statistical notation (Pattern 11 requires repeating those consistently). If a non-term replacement phrase or idiom recurs mechanically across paragraphs, vary it with plain academic wording.
 - Run it at most twice: once on the draft and once after your fixes. Do not keep rewriting to clear the candidate list.
 - Do not paste the report into your answer. Fold what you fixed into the summary of changes.
 

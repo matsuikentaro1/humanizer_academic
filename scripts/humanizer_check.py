@@ -4,8 +4,9 @@ humanizer_check.py - mechanical checks for the humanizer_academic skill.
 
 Counts what a language model counts badly: words per sentence, em dashes,
 curly quotes, repeated openers, ", and" chains (including predicates that
-resume after a citation block), and numbers that appear in the
-revision but not in the original. Standard library only. Always exits 0.
+resume after a citation block), repeated phrases across paragraphs, and
+numbers that appear in the revision but not in the original. Standard
+library only. Always exits 0.
 
 Usage:
     python humanizer_check.py revised.txt
@@ -23,6 +24,7 @@ violations, and the script gives no score.
 """
 
 import argparse
+from collections import Counter
 import io
 import re
 import sys
@@ -86,6 +88,26 @@ BETWEEN = re.compile(r"\bbetween\b(?:\s+(?!between\b)[^\s.;:]+){1,6}?\s+and\b(?:
 # a verb follows within a few words.
 VERB = r"(?:is|are|was|were|did|does|do|had|has|have|may|might|can|could|would|should|will|remained|became|showed|reported|reached)"
 CLAUSE_AND = re.compile(r",\s+and(?:\s+[^\s,.;:]+){0,4}?\s+" + VERB + r"\b")
+
+# Pattern 36: repeated non-term phrases across paragraphs.
+CITATION_OR_STAT = re.compile(r"\([^()]*\d[^()]*\)|\[[^\[\]]*\d[^\[\]]*\]")
+PHRASE_STOPWORDS = {
+    "a", "an", "the", "and", "or", "but", "nor", "if", "of", "in", "on", "at",
+    "to", "for", "with", "by", "from", "as", "into", "about", "than", "that",
+    "this", "these", "those", "it", "its", "they", "their", "them", "we", "our",
+    "us", "he", "she", "his", "her", "who", "which", "where", "when", "while",
+    "is", "are", "was", "were", "be", "been", "being", "has", "have", "had",
+    "do", "does", "did", "not", "no", "also", "more", "most", "such", "both",
+    "each", "other", "all", "any", "some", "may", "might", "can", "could",
+    "would", "should", "will", "et", "al",
+}
+DANGLING_EDGES = {
+    "a", "an", "the", "and", "or", "but", "of", "in", "on", "at", "to", "for",
+    "with", "by", "from", "as", "into", "through", "between", "among", "after",
+    "before", "during", "without", "under", "over", "about", "than", "that",
+    "this", "these", "those", "is", "are", "was", "were", "be", "been", "has",
+    "have", "had", "not", "et", "al",
+}
 
 
 def read_text(path):
@@ -164,6 +186,63 @@ def normalize_number(token):
 
 def numbers(text):
     return {normalize_number(m.group(0)) for m in NUMBER.finditer(text)}
+
+
+def is_subtuple(short, long):
+    n = len(short)
+    return any(long[i : i + n] == short for i in range(len(long) - n + 1))
+
+
+def repeated_phrases(paras, min_count=4, min_paras=2, limit=15):
+    """Return recurring 3-4 word phrases across paragraphs as candidates."""
+    total_counts = Counter()
+    para_sets = {}
+    for p_idx, p in enumerate(paras):
+        cleaned = CITATION_OR_STAT.sub(" ", p)
+        for chunk in re.split(r"[.,;:?!()\[\]\"]+", cleaned):
+            words = re.findall(r"[a-z0-9][a-z0-9'-]*", chunk.lower())
+            for n in (3, 4):
+                for i in range(len(words) - n + 1):
+                    ng = tuple(words[i : i + n])
+                    if any(any(ch.isdigit() for ch in w) for w in ng):
+                        continue
+                    if sum(1 for w in ng if w not in PHRASE_STOPWORDS) < 2:
+                        continue
+                    if "et" in ng and "al" in ng:
+                        continue
+                    if ng[0] in DANGLING_EDGES or ng[-1] in DANGLING_EDGES:
+                        continue
+                    total_counts[ng] += 1
+                    para_sets.setdefault(ng, set()).add(p_idx)
+
+    candidates = [
+        ng
+        for ng, cnt in total_counts.items()
+        if cnt >= min_count and len(para_sets[ng]) >= min_paras
+    ]
+    cand_set = set(candidates)
+
+    kept = []
+    for ng in candidates:
+        cnt = total_counts[ng]
+        # Drop 3-gram subsumed by a 4-gram with similar count.
+        if len(ng) == 3 and any(
+            len(other) == 4
+            and total_counts[other] >= cnt * 0.8
+            and is_subtuple(ng, other)
+            for other in candidates
+        ):
+            continue
+        # Drop 4-gram whose leading/trailing function word adds no frequency distinction.
+        if len(ng) == 4:
+            if ng[0] in DANGLING_EDGES and ng[1:] in cand_set and total_counts[ng[1:]] >= cnt:
+                continue
+            if ng[-1] in DANGLING_EDGES and ng[:-1] in cand_set and total_counts[ng[:-1]] >= cnt:
+                continue
+        kept.append(ng)
+
+    kept.sort(key=lambda ng: (-total_counts[ng], -len(para_sets[ng]), -len(ng), ng))
+    return [(" ".join(ng), total_counts[ng], len(para_sets[ng])) for ng in kept[:limit]]
 
 
 def check(revised, original=None):
@@ -265,10 +344,19 @@ def check(revised, original=None):
     out.append(f"Candidate words to read in context (not violations): {len(found)}")
     out.extend(found)
 
+    # 7. Repeated phrases across paragraphs (Pattern 36): candidates to read in context.
+    out.append("")
+    phrases = repeated_phrases(paras)
+    out.append(
+        f"Repeated phrases to read in context (ignore study terms and statistical notation): {len(phrases)}"
+    )
+    for phrase, cnt, n_paras in phrases:
+        out.append(f"  - \"{phrase}\" ({cnt} times across {n_paras} paragraphs)")
+
     out.append("")
     out.append("Fix em dashes, curly quotes, and uniform paragraphs.")
     out.append("Check each added number against the original; a number that the original spelled out is fine.")
-    out.append("Judge the candidates and the \", and\" sentences in context. One revision round is enough.")
+    out.append("Judge the candidates, the \", and\" sentences, and repeated phrases in context. One revision round is enough.")
     return "\n".join(out)
 
 

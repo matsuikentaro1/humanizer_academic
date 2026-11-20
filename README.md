@@ -46,6 +46,7 @@ Language models miscount words and tend to grade their own drafts generously. Wh
 - em dashes and curly quotes
 - three consecutive sentences with the same first word, and "Additionally" used more than once in a paragraph
 - sentences that may chain clauses with ", and" (Pattern 35): ", and" followed by a verb, long sentences with three or more "and", gapped clauses, and "between X and A and B"
+- 3- to 4-word phrases repeated four or more times across multiple paragraphs (Pattern 36), listed as candidates to judge in context (ignoring study terms and statistical notation)
 - numbers that appear in the revision but not in the original
 - words named in the patterns, listed as candidates to read in context
 
@@ -69,7 +70,7 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 
 > "LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely result that applies to the widest variety of cases."
 
-## 35 Patterns Detected (with Before/After Examples)
+## 36 Patterns Detected (with Before/After Examples)
 
 ### Content Patterns
 
@@ -132,7 +133,7 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 | 30 | **Connective-preserving edits** (never bare-delete a transition) | "X reduced death. The benefit appeared within months." (choppy) | "X also reduced death. This benefit appeared within months." (a connective plus an echoed noun, not a default ", and this") |
 | 31 | **Paragraph cohesion** (old-to-new flow + paragraph-opening markers) | Disconnected sentences after editing | Mandatory final check: each sentence links to the previous one; contrast/continuity openers (However / On the other hand / Overall / Taken together) survive |
 | 32 | **Paraphrastic repetition** | "X is associated with Y. In other words, X may contribute to Y. That is, X plays a role in Y." | State each claim once; keep the most specific version |
-| 33 | **Content-free evaluation sentences** | "This is a noteworthy finding." "This observation is of clinical significance." | Delete standalone verdicts; if important, show why with data or mechanism |
+| 33 | **Content-free evaluation and empty preview sentences** (extended in v2.8) | "This is a noteworthy finding." "Interpreting X requires careful consideration of Y." | Delete standalone verdicts and empty throat-clearing previews; state the concrete reason or let the next sentence carry the point directly |
 
 ### Sentence Rhythm and Reader Clarity (v2.3)
 
@@ -140,6 +141,7 @@ Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikip
 |---|---------|--------|-------|
 | 34 | **Sentence rhythm & burstiness, in the service of clarity** | Uniform 18-22 word sentences; stacked conditions and unclear comparisons | Vary sentence lengths and openings in every paragraph by splitting stacked sentences and combining related supporting sentences; keep short claim sentences short |
 | 35 | **Independent clauses chained with ", and"** (v2.6; stacked predicates, nested lists, and "between X and A and B" added in v2.7; predicates split by citation blocks added in v2.7.1) | "...for DACS, and this was most prominent for MorningHarbor." "...may be disproportionate to its frequency, and it warrants attention." | Name the relation: "...for DACS, most prominently for MorningHarbor." "...it warrants attention because its impact may be disproportionate to its frequency." Use ", and" as a joining device at most once per paragraph |
+| 36 | **Over-repeated non-term phrases** (v2.8) | Repeating "excluded the null" or "carried the association" across multiple paragraphs to avoid standard terms | Keep study constructs consistent (Pattern 11), but vary over-repeated non-term replacement phrases with plain academic wording |
 
 > **Reader clarity comes first.** Preserve actors, comparisons, conditions, and logical relationships. Shorten by removing low-priority or repetitive sentences rather than compressing essential meaning. Burstiness is still required in every paragraph (mandatory rhythm check), but it is obtained only through edits that keep meaning explicit, and never by merging the author's short claim sentences. See the [eight diagnostic examples](references/reader-clarity.md).
 
@@ -208,6 +210,7 @@ When you change the version, update all of the following in the same commit:
 
 ## Version History
 
+- **2.8.0** - Added Pattern 36 (over-repeated non-term phrases) to catch replacement over-concentration: when avoiding AI vocabulary or standard phrases such as "statistically significant" or "mediated", models often lock onto a single replacement phrase (such as "excluded the null" or "carried the association") and repeat it mechanically across paragraphs. Pattern 36 explicitly preserves Pattern 11 (study constructs and technical terms stay consistent). Extended Pattern 33 to also cover empty preview / throat-clearing sentences ("Interpreting X requires careful consideration of Y.", "These findings bear on how X is assessed."), aligning with Example 6 in `references/reader-clarity.md`. Added a repeated-phrases section to `scripts/humanizer_check.py` that lists 3- to 4-word phrases appearing four or more times across multiple paragraphs as candidates to read in context (excluding stopword-only spans, citation/statistic blocks, and dangling function-word edges).
 - **2.7.1** - Pattern 35 now names the form that stacked predicates usually take in Introduction and Discussion: two predicates on one subject split by a block of citations ("X has been associated with A (refs), and with B (refs); Y has likewise ..."), with a fictional Before/After. The checker lists a sentence in which ", and" plus a preposition (with, to, in, among, ...) resumes right after a parenthesized or bracketed citation or statistic. The v2.7.0 checker missed this form because ", and with" is not followed by a verb. The skill now also says that a clean checker report does not end the Pattern 35 read: the first sentence of each paragraph and every sentence over 40 words are read by hand.
 - **2.7.0** - Extended Pattern 35 to three constructions that v2.6 left untargeted: one subject carrying three or more predicates, or two predicates separated by statistics, including gapped clauses such as ", and greater in A than in B" (split where the subject or comparison changes and restate the subject); lists nested inside lists (separate the outer items with semicolons); and "between X and A and B" (name the second side as one unit). These constructions are common in Results sentences and come from authors' drafts as well as from model edits. After shortening text to meet a word limit, the skill now rereads each shortened sentence for these constructions and for pronouns introduced to save words (Shortening order step 5 in reader-clarity.md). The checker now lists sentences in which ", and" is followed by a verb, long sentences with three or more "and", gapped clauses, and "between X and A and B", as candidates to read. On a 33-paragraph manuscript it listed 18 paragraphs before revision and 3 after; the skill still reads every paragraph, because the checker does not catch every chain.
 - **2.6.0** - Added Pattern 35 (independent clauses chained with ", and", especially ", and this/it ..."). Before joining two clauses with ", and", the skill now names their relation and writes it out: "because" for cause, "whereas" for contrast, a phrase such as "most prominently for X" for the degree of the same finding, or a semicolon for closely related facts. ", and" stays for genuinely parallel facts, at most once per paragraph as a joining device. The examples had been teaching the construction: the Afters of Patterns 29, 30, 33, and 34 joined clauses with ", and", and Pattern 30 offered ", and this benefit ..." as the right fix. They now use semicolons, echoed nouns, and prepositional openers. Pattern 3 says not to fill a deleted -ing tail with ", and this ...", and Pattern 34 no longer accepts ", and" as a way to combine sentences for rhythm. The checker lists ", and this/it/these" as a Pattern 35 candidate.
