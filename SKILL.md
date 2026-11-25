@@ -1,6 +1,6 @@
 ---
 name: humanizer_academic
-version: 2.8.1
+version: 2.9.0
 description: |
   Remove signs of AI-generated writing from academic medical papers. Use when editing
   or reviewing manuscripts to make them sound more natural and professionally written.
@@ -290,17 +290,37 @@ After:
 
 ---
 
-### 11. Elegant variation (synonym cycling) and term consistency
+### 11. Elegant variation of defined terms (term consistency)
 
-Problem: AI has repetition-penalty code causing excessive synonym substitution. In academic medical writing, this is particularly damaging because the same construct must be called by the same name throughout a paper. Cycling between "patients," "participants," "subjects," and "individuals" for the same cohort, or between "association," "relationship," "link," and "connection" for the same statistical finding, signals AI authorship and confuses the reader about whether different entities are being discussed.
+Problem: Models learn from prose that treats variety as a virtue, so they often rotate synonyms for a term the paper has already defined. In a manuscript, a new name reads as a new thing. If "sleep quality" becomes "sleep health" two sentences later, the reader has to work out whether a different variable is meant.
 
-Rule: Pick one term for each concept and use it consistently. Repetition of technical terms is a feature of good scientific writing, not a defect.
+Test: Would a reader who meets the alternative wording wonder whether a different entity, variable, group, or statistical quantity is being discussed? If yes, the term is fixed. If no, the wording is free.
 
-Before:
+Fixed terms (use the same name every time):
+- Exposures, outcomes, instruments and scales, and named groups or arms
+- Statistical quantities ("hazard ratio", "odds ratio", "indirect effect")
+- Words that look generic but differ in technical meaning: "association" and "correlation"; "incidence" and "prevalence"; "risk", "odds", and "hazard"; a diagnosis and a trait ("autistic adults" and "adults with autistic traits")
+
+Free wording (not governed by this pattern):
+- A generic noun whose referent is unambiguous, such as "patients" and "participants" in a paper with a single cohort
+- Pronouns, demonstratives ("this association"), and ellipsis that point back to a fixed term
+- Reporting verbs and framing expressions (see Pattern 36)
+
+For free wording, avoid both extremes. Do not rotate nouns for decoration: three different nouns for one cohort in three consecutive sentences is still a tell. Do not force uniformity either: replacing every "they" with "patients", or unifying wording the author varied, produces the mechanical repetition that Pattern 36 describes.
+
+Before (a defined term drifts; fictional):
+> Sleep quality was assessed with the Pittsburgh Sleep Quality Index. Poor sleep health was associated with higher depressive symptom scores. The relationship between sleep disturbance and depression remained after adjustment for age and sex.
+
+After:
+> Sleep quality was assessed with the Pittsburgh Sleep Quality Index. Poor sleep quality was associated with higher depressive symptom scores. This association remained after adjustment for age and sex.
+
+Before (decorative rotation of a generic noun):
 > Patients in the empagliflozin group had lower rates of hospitalization for heart failure (2.7% vs. 4.1%). Participants also demonstrated reduced cardiovascular mortality (3.7% vs. 5.9%). Subjects experienced decreased all-cause death rates (5.7% vs. 8.3%).
 
 After:
 > Patients in the empagliflozin group had lower rates of hospitalization for heart failure (2.7% vs. 4.1%), cardiovascular death (3.7% vs. 5.9%), and all-cause mortality (5.7% vs. 8.3%).
+
+Rule: Give each defined term one name and repeat it; repetition of a technical term is a feature of scientific writing, not a defect. Leave free wording to the sentence: no rotation for variety, and no forced uniformity.
 
 ---
 
@@ -795,7 +815,7 @@ When you shorten text to meet a word limit, reread every sentence you shortened 
 
 Problem: When avoiding AI vocabulary or standard phrases (such as "statistically significant" or "mediated"), models often lock onto a single replacement phrase (such as "excluded the null" or "carried the association") and repeat it across multiple paragraphs. The first use reads naturally; the fifth or eighth use reads like a mechanical rule applied by an algorithm.
 
-Division of labor with Pattern 11: Pattern 11 requires repeating the exact same term for a study construct, exposure, outcome, or statistical quantity throughout the paper. Pattern 36 applies only to non-term phrasing: idioms, replacement predicates, and framing expressions that are not technical names. Never replace a consistent study term with a synonym to satisfy Pattern 36.
+Division of labor with Pattern 11: Pattern 11 fixes the name of every defined term (a study construct, exposure, outcome, group, or statistical quantity) according to its test: would a reader take the alternative wording for a different thing? Pattern 36 applies only to wording that passes that test as free: idioms, replacement predicates, reporting verbs, and framing expressions. Never replace a fixed term with a synonym to satisfy Pattern 36.
 
 Before (fictional):
 > In the primary model, the indirect estimate through sleep quality excluded the null (0.08; 95% CI, 0.05 to 0.11), whereas the estimate through sleep duration did not exclude the null. The exposure-mediator interaction excluded the null in group A, whereas it did not exclude the null in group B. Across all four sensitivity models, the indirect estimate through sleep quality excluded the null.
@@ -804,6 +824,23 @@ After:
 > In the primary model, the indirect estimate through sleep quality excluded the null (0.08; 95% CI, 0.05 to 0.11), whereas the confidence interval for sleep duration included zero. The exposure-mediator interaction was statistically significant in group A, whereas the estimate in group B was compatible with the null. Across all four sensitivity models, the confidence interval for sleep quality remained above zero.
 
 Rule: When a non-term replacement phrase appears four or more times across a manuscript, keep one or two natural uses and vary the rest with plain, direct wording (such as "was associated with", "was statistically significant", "the confidence interval included zero", "was compatible with the null", or "remained above zero"). Preserve the statistical meaning when varying phrasing: never turn "did not exclude the null" into a claim of absence ("did not mediate", "was not present") or imply a between-group difference without a direct comparison. Do not replace one pet phrase with another stylized idiom; prefer plain academic phrasing.
+
+#### Local form: one reporting verb forced onto parallel clauses
+
+Problem: The same lock-in happens inside a sentence and across adjacent sentences. When a model summarizes several studies in parallel clauses, it tends to give every clause the same reporting verb ("reported ... reported ...", "showed ... showed ... showed ..."), because the parallel frame makes the repeated verb the most likely continuation. A model asked to review a sentence makes the same move in reverse: it sees two different verbs in parallel clauses and proposes to unify them "for parallelism".
+
+Before (fictional):
+> Nurses on rotating shifts showed shorter sleep duration in actigraphy recordings, and nurses on permanent night shifts showed more daytime sleepiness on the Epworth Sleepiness Scale.
+
+After:
+> Nurses on rotating shifts had shorter sleep duration in actigraphy recordings, and nurses on permanent night shifts reported more daytime sleepiness on the Epworth Sleepiness Scale.
+
+Rule: Choose each verb from what the study measured, not from the neighbouring clause. "Reported" fits self-report (questionnaires, interviews); "had" or "showed" fits a measured or observed result (actigraphy, polysomnography, a registry diagnosis); "was associated with" fits a model estimate. The group names stay fixed (Pattern 11); only the verb moves.
+
+Guardrails:
+- Do not unify verbs that the author varied. If the input says one group "reported" a result and another "had" one, keep both; the difference may record how each result was measured.
+- Do not vary a verb only to make it differ. Two clauses that rest on the same kind of evidence can share a verb.
+- If the input does not say how a result was measured, keep the author's verb. Choosing "reported" or "measured" without that information adds a claim (see the fidelity check).
 
 ---
 
@@ -818,7 +855,7 @@ Rule: When a non-term replacement phrase appears four or more times across a man
 5. Ensure the draft:
    - Sounds natural when read in an academic context
    - Matches the author's voice profile (Voice calibration section)
-   - Uses precise, specific language with consistent terminology (Pattern 11)
+   - Uses precise, specific language with one name for each defined term (Pattern 11)
    - Maintains data integrity (numbers, statistics, findings)
    - Uses simple constructions (is/are/has) where appropriate
    - Avoids promotional or inflated language
@@ -831,14 +868,14 @@ Rule: When a non-term replacement phrase appears four or more times across a man
    - Sentence lengths still too uniform (check the Pattern 34 criterion: in paragraphs of three or more sentences, do all sentences fall within a 5-word range?)
    - Sentence openings still repetitive (check: do three+ consecutive sentences start the same way?)
    - Vocabulary tells that slipped through (check Patterns 1, 7, 29 word lists)
-   - Over-repeated non-term phrases introduced during editing (check Pattern 36: has a single replacement phrase such as "excluded the null" or "carried the association" been repeated mechanically across paragraphs, while leaving study terms consistent per Pattern 11?)
+   - Over-repeated non-term phrases introduced during editing (check Pattern 36: has a single replacement phrase such as "excluded the null" or "carried the association" been repeated mechanically across paragraphs, while leaving study terms consistent per Pattern 11? Has one reporting verb been forced onto parallel clauses, or have verbs that the author varied been unified?)
    - Independent clauses chained with ", and", especially ", and this/it ..." (check Pattern 35: is the relation causal, contrastive, or a specification? Is ", and" used as a joining device more than once in a paragraph? Does one subject carry three or more predicates, two predicates split by a citation block (", and with ..." after the references), or a gapped clause? Is a list nested inside a list without semicolons? Read every paragraph for these yourself; the checker lists only some of them.)
    - Broken connective chain (check Pattern 31 checklist)
 7. Fix every issue found in the self-audit.
 
 ### Mandatory final checks
 
-When you can run commands, start these checks by running the bundled checker once on the draft. It counts what is easy to miscount: the words in each sentence of every paragraph, em dashes, curly quotes, repeated sentence openers, sentences that may chain clauses with ", and", repeated phrases across paragraphs, and numbers that appear in the revision but not in the original.
+When you can run commands, start these checks by running the bundled checker once on the draft. It counts what is easy to miscount: the words in each sentence of every paragraph, em dashes, curly quotes, repeated sentence openers, sentences that may chain clauses with ", and", repeated phrases across paragraphs, repeated reporting verbs, and numbers that appear in the revision but not in the original.
 
 ```bash
 python "${CLAUDE_SKILL_DIR}/scripts/humanizer_check.py" <<'HUMANIZER_EOF'
@@ -857,6 +894,7 @@ Use the report as follows:
 - Read each candidate word in context. The list names candidates, and a legitimate use stays (see Preserve legitimate academic phrases).
 - Read each sentence in the ", and" list (Pattern 35). Commas before the last item of a simple list are counted too, so many entries are fine. A paragraph that the checker does not list can still chain clauses; the checker does not replace reading. A clean report is not the end of the Pattern 35 read: read the first sentence of each paragraph and every sentence over 40 words yourself, because those are where stacked predicates hide.
 - Scan the repeated-phrases list (Pattern 36). Ignore study constructs, variable names, and standard statistical notation (Pattern 11 requires repeating those consistently). If a non-term replacement phrase or idiom recurs mechanically across paragraphs, vary it with plain academic wording.
+- Read each entry in the repeated-reporting-verbs list (Pattern 36, local form). Keep the repeat when the clauses rest on the same kind of evidence. Change a verb only when the input shows that the result was measured differently, and compare with the input: if your draft unified verbs that the author varied, restore the author's verbs.
 - Run it at most twice: once on the draft and once after your fixes. Do not keep rewriting to clear the candidate list.
 - Do not paste the report into your answer. Fold what you fixed into the summary of changes.
 

@@ -4,9 +4,9 @@ humanizer_check.py - mechanical checks for the humanizer_academic skill.
 
 Counts what a language model counts badly: words per sentence, em dashes,
 curly quotes, repeated openers, ", and" chains (including predicates that
-resume after a citation block), repeated phrases across paragraphs, and
-numbers that appear in the revision but not in the original. Standard
-library only. Always exits 0.
+resume after a citation block), repeated phrases across paragraphs, repeated
+reporting verbs, and numbers that appear in the revision but not in the
+original. Standard library only. Always exits 0.
 
 Usage:
     python humanizer_check.py revised.txt
@@ -107,6 +107,28 @@ DANGLING_EDGES = {
     "before", "during", "without", "under", "over", "about", "than", "that",
     "this", "these", "those", "is", "are", "was", "were", "be", "been", "has",
     "have", "had", "not", "et", "al",
+}
+
+# Pattern 36 (local form): one reporting verb repeated in a sentence or in
+# three consecutive sentences. "self-reported" and similar compounds are skipped.
+REPORTING_VERBS = {
+    "report": r"reports?|reported",
+    "show": r"shows?|showed|shown",
+    "demonstrate": r"demonstrates?|demonstrated",
+    "find": r"finds?|found",
+    "observe": r"observes?|observed",
+    "indicate": r"indicates?|indicated",
+    "reveal": r"reveals?|revealed",
+    "suggest": r"suggests?|suggested",
+    "exhibit": r"exhibits?|exhibited",
+    "display": r"displays?|displayed",
+    "identify": r"identif(?:y|ies|ied)",
+    "document": r"documents?|documented",
+    "describe": r"describes?|described",
+}
+REPORTING_RE = {
+    lemma: re.compile(r"(?<![\w-])(?:" + forms + r")(?![\w-])", re.IGNORECASE)
+    for lemma, forms in REPORTING_VERBS.items()
 }
 
 
@@ -245,6 +267,34 @@ def repeated_phrases(paras, min_count=4, min_paras=2, limit=15):
     return [(" ".join(ng), total_counts[ng], len(para_sets[ng])) for ng in kept[:limit]]
 
 
+def repeated_reporting_verbs(para_sentences):
+    """Return lines for one reporting verb repeated in a sentence or in 3 consecutive sentences."""
+    lines = []
+    for index, sents in enumerate(para_sentences, 1):
+        counts = [
+            {
+                lemma: len(pattern.findall(CITATION_OR_STAT.sub(" ", s)))
+                for lemma, pattern in REPORTING_RE.items()
+            }
+            for s in sents
+        ]
+        for lemma in REPORTING_VERBS:
+            within = [i for i, c in enumerate(counts) if c[lemma] >= 2]
+            for i in within:
+                lines.append(
+                    f"  - P{index}, sentence {i + 1}: \"{lemma}\" x {counts[i][lemma]}: {snippet(sents[i], 60)}"
+                )
+            if within:
+                continue
+            for i in range(len(counts) - 2):
+                if all(counts[j][lemma] for j in (i, i + 1, i + 2)):
+                    lines.append(
+                        f"  - P{index}: sentences {i + 1}-{i + 3} all use \"{lemma}\""
+                    )
+                    break
+    return lines
+
+
 def check(revised, original=None):
     out = []
     paras = list(paragraphs(revised))
@@ -353,10 +403,18 @@ def check(revised, original=None):
     for phrase, cnt, n_paras in phrases:
         out.append(f"  - \"{phrase}\" ({cnt} times across {n_paras} paragraphs)")
 
+    # 8. Repeated reporting verbs (Pattern 36, local form): candidates to read in context.
+    out.append("")
+    verb_lines = repeated_reporting_verbs(para_sentences)
+    out.append(
+        f"Repeated reporting verbs to read in context (fine when the evidence is the same kind): {len(verb_lines)}"
+    )
+    out.extend(verb_lines)
+
     out.append("")
     out.append("Fix em dashes, curly quotes, and uniform paragraphs.")
     out.append("Check each added number against the original; a number that the original spelled out is fine.")
-    out.append("Judge the candidates, the \", and\" sentences, and repeated phrases in context. One revision round is enough.")
+    out.append("Judge the candidates, the \", and\" sentences, repeated phrases, and repeated reporting verbs in context. One revision round is enough.")
     return "\n".join(out)
 
 
